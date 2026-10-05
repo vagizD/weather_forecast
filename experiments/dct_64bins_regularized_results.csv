@@ -1,0 +1,4 @@
+model,best_params,val_mae_mean,val_rmse_mean,test_mae_mean,test_mae_std,test_rmse_mean,test_rmse_std
+"DenseCrossTransformer (64 Bins, Regularized)","best_epoch=9, 64bins, dropout=0.25, wd=0.01",7.154799461364746,8.598088264465332,5.305216312408447,1.828621506690979,6.398160457611084,1.9003149271011353
+DenseCrossTransformer 64b (No Year),year_embedding=0,,,5.697368621826172,2.3943467140197754,6.793000221252441,2.4729738235473633
+DenseCrossTransformer 64b (No Time),all_time_embeddings=0,,,10.647679328918457,2.0231869220733643,11.486023902893066,2.0018579959869385

@@ -1,0 +1,5 @@
+Embedding,Direction Probe r,R2,Physical Interpretation,Pairwise Distance
+Hour (0-23),0.9114,0.8307,Learned diurnal heating/cooling cycle,
+Month (1-12),0.9838,0.9679,Learned annual thermodynamic cycle,
+Year (2000-2026),0.7605,0.5783,Learned decadal global warming anomaly,
+,-0.0672,0.0045,Hours with similar temps share high dot products,Hour Cosine Sim vs |ΔT|

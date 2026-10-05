@@ -1,0 +1,2 @@
+model,best_epoch,val_mae_mean,val_rmse_mean,test_mae_mean,test_mae_std,test_rmse_mean,test_rmse_std
+PatchTST + RoPE + Transferred Time Emb,4,7.188446631798377,8.575245044170282,3.972561997633714,0.8154898852478658,5.006542939406175,1.0976901236838863

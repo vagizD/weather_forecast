@@ -1,0 +1,32 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PyTorch checkpoints and models (prevent large binary bloating in git)
+*.pt
+*.pth
+*.ckpt
+experiments/tb_logs/
+
+# Raw and processed large dataset files (>5MB)
+data/raw/
+data/processed/*.parquet
+*.npy
+
+# IDEs and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+
+# OS generated files
+.DS_Store
+Thumbs.db

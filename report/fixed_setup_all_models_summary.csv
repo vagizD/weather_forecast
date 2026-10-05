@@ -1,0 +1,16 @@
+model,best_params,val_mae_mean,test_mae_mean,test_mae_std,test_rmse_mean,test_rmse_std,locked_test_mae,locked_test_rmse,retrained_locked_test_mae,retrained_locked_test_rmse
+PatchTST + Transferred Time Emb (Sinusoidal),"best_epoch=5, d_model=128, time_emb=64",7.25,3.87,0.78,4.91,1.07,6.95,8.57,6.88,8.56
+PatchTST + RoPE + Transferred Time Emb,"best_epoch=4, rotary_pos_emb, time_emb=64",7.19,3.97,0.82,5.01,1.10,6.93,8.56,7.54,8.80
+PatchTST (Transformer Baseline),"best_epoch=6, patch=24, stride=12, d_model=128",7.07,4.02,0.98,5.04,1.26,6.65,8.18,6.90,8.21
+Linear Regression (Ridge),"alpha=50.0, history=168h",7.02,4.14,0.87,5.18,1.08,5.86,7.32,5.86,7.32
+LightGBM (Tabular GBDT),"{'n_estimators': 150, 'learning_rate': 0.03, 'num_leaves': 31}",6.98,4.17,0.93,5.22,1.17,5.90,7.38,5.90,7.39
+PatchTST + Self-Learned Time Emb,"best_epoch=7, learned_from_scratch",7.14,4.20,0.68,5.22,0.88,7.14,8.39,6.95,8.45
+PatchTST + Time Emb + Future Transformer,"best_epoch=1, 2-layer future transformer",7.33,4.21,0.85,5.26,1.09,6.81,8.16,6.85,8.61
+Climatology Base,Empirical 26-Year Historical Mean (DOY + Hour),7.43,4.35,0.94,5.40,1.15,6.94,8.25,6.94,8.25
+DenseCrossTransformer (10-Bin),"best_epoch=3, d_model=128, ple_10bins",7.48,4.82,1.11,5.92,1.26,7.08,8.37,6.76,8.17
+PatchTST + Time Emb + Learned Channel Mixing,"best_epoch=6, nn.Linear(C, 1) mixer",7.15,4.91,1.17,5.95,1.24,6.66,7.92,7.45,8.88
+DenseCrossTransformer (64-Bin Regularized),"best_epoch=9, wd=0.01, drop=0.25, 64bins",7.15,5.31,1.83,6.40,1.90,8.14,9.54,7.10,8.85
+DenseCrossTransformer 64-Bin (Ablation: No Year),year_embedding=0,—,5.70,2.39,6.79,2.47,7.09,8.38,—,—
+DenseCrossTransformer 10-Bin (Ablation: No Year),year_embedding=0,—,6.02,1.93,7.11,1.97,7.97,9.38,—,—
+DenseCrossTransformer 10-Bin (Ablation: No Time),all_time_embeddings=0,—,8.33,1.75,9.29,1.75,9.13,10.72,—,—
+DenseCrossTransformer 64-Bin (Ablation: No Time),all_time_embeddings=0,—,10.65,2.02,11.49,2.00,10.93,12.73,—,—

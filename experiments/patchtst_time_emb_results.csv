@@ -1,0 +1,2 @@
+model,best_params,val_mae_mean,val_rmse_mean,test_mae_mean,test_mae_std,test_rmse_mean,test_rmse_std
+PatchTST + Time Embeddings,"best_epoch=5, d_model=128, time_emb=64",7.247769857064272,8.613469991928492,3.868142032623291,0.782486291880397,4.912136422670804,1.065783046776129
