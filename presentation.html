@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>14-Day Hourly Weather Forecast at KRDU</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --bg-card: rgba(22, 29, 47, 0.75);
+      --bg-card-hover: rgba(30, 41, 67, 0.9);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(0, 240, 255, 0.3);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-faint: #64748b;
+      --cyan: #00f0ff;
+      --purple: #a855f7;
+      --pink: #ec4899;
+      --amber: #f59e0b;
+      --emerald: #10b981;
+      --red: #ef4444;
+      --blue: #3b82f6;
+      --glow-cyan: 0 0 35px rgba(0, 240, 255, 0.2);
+      --glow-purple: 0 0 35px rgba(168, 85, 247, 0.2);
+      --font-display: 'Outfit', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      user-select: none;
+    }
+
+    /* Ambient background grid and glow */
+    .ambient-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background: 
+        radial-gradient(circle at 15% 20%, rgba(0, 240, 255, 0.07) 0%, transparent 45%),
+        radial-gradient(circle at 85% 80%, rgba(168, 85, 247, 0.07) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.8) 0%, #090d16 100%);
+    }
+
+    .ambient-grid {
+      position: fixed;
+      inset: 0;
+      background-size: 60px 60px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Progress bar */
+    .progress-bar-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.05);
+      z-index: 100;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--cyan), var(--purple), var(--pink));
+      box-shadow: 0 0 12px var(--cyan);
+      transition: width var(--transition-smooth);
+    }
+
+    /* Main presentation viewport */
+    .presentation-deck {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 4.5rem 6rem;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.96) translateY(12px);
+      transition: opacity var(--transition-smooth), transform var(--transition-smooth), visibility var(--transition-smooth);
+      pointer-events: none;
+      max-width: 1500px;
+      margin: 0 auto;
+    }
+
+    .slide.active {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1) translateY(0);
+      pointer-events: auto;
+    }
+
+    /* Typography & Micro-elements */
+    .tag-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      color: var(--cyan);
+      margin-bottom: 1.25rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .tag-badge.emerald {
+      color: var(--emerald);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .tag-badge.purple {
+      color: var(--purple);
+      border-color: rgba(168, 85, 247, 0.3);
+    }
+
+    .tag-badge.amber {
+      color: var(--amber);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    .slide-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.1;
+      text-align: center;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #ffffff 30%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .slide-subtitle {
+      font-size: clamp(1rem, 1.8vw, 1.35rem);
+      color: var(--text-muted);
+      text-align: center;
+      max-width: 820px;
+      margin-bottom: 2.25rem;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    /* Visual Components & Layouts */
+    .cards-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 1200px;
+      margin-top: 0.5rem;
+    }
+
+    .cards-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .cards-2 {
+      grid-template-columns: repeat(2, 1fr);
+      max-width: 950px;
+    }
+
+    .cards-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.75rem;
+      backdrop-filter: blur(16px);
+      transition: all var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-accent);
+      transform: translateY(-4px);
+      box-shadow: var(--glow-cyan);
+    }
+
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+      line-height: 1;
+    }
+
+    .card-metric {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 3.5vw, 3.2rem);
+      font-weight: 800;
+      color: var(--cyan);
+      margin-bottom: 0.25rem;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .card-metric.purple { color: var(--purple); }
+    .card-metric.amber { color: var(--amber); }
+    .card-metric.emerald { color: var(--emerald); }
+
+    .card-heading {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.4rem;
+    }
+
+    .card-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* Media and Image Display */
+    .image-container {
+      position: relative;
+      max-width: 1000px;
+      max-height: 52vh;
+      width: 100%;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-in;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .image-container:hover {
+      border-color: var(--cyan);
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.25);
+    }
+
+    .image-container img {
+      max-width: 100%;
+      max-height: 52vh;
+      object-fit: contain;
+      display: block;
+    }
+
+    .image-caption {
+      margin-top: 0.75rem;
+      font-size: 0.8rem;
+      color: var(--text-faint);
+      font-family: var(--font-mono);
+      text-align: center;
+    }
+
+    /* Minimalist Tables */
+    .table-wrapper {
+      width: 100%;
+      max-width: 1050px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 1rem 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-faint);
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 1.05rem 1.25rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr.highlight-champion {
+      background: rgba(0, 240, 255, 0.06);
+    }
+
+    tr.highlight-champion td {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .metric-cell {
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    .badge-champ {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.2rem 0.6rem;
+      background: rgba(0, 240, 255, 0.15);
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    /* Formulas & Code blocks */
+    .formula-box {
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 1.25rem 2.25rem;
+      font-family: var(--font-mono);
+      font-size: clamp(1rem, 1.8vw, 1.35rem);
+      color: var(--cyan);
+      text-align: center;
+      margin: 1rem 0;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Floating Presenter HUD */
+    .hud {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--border);
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      backdrop-filter: blur(20px);
+      z-index: 90;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .hud-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      transition: all var(--transition-fast);
+      font-size: 1rem;
+    }
+
+    .hud-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border-color: var(--border);
+    }
+
+    .hud-btn.active {
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--cyan);
+      border-color: var(--border-accent);
+    }
+
+    .hud-divider {
+      width: 1px;
+      height: 18px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .hud-counter {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-main);
+      font-weight: 600;
+      padding: 0 0.5rem;
+    }
+
+    .hud-block-name {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      max-width: 200px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-right: 0.5rem;
+    }
+
+    .hud-timer {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--amber);
+      cursor: pointer;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+
+    /* Speaker Notes Drawer */
+    .notes-drawer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(11, 16, 27, 0.98);
+      border-top: 1px solid rgba(0, 240, 255, 0.2);
+      backdrop-filter: blur(24px);
+      z-index: 120;
+      transform: translateY(105%);
+      transition: transform var(--transition-smooth);
+      max-height: 48vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.7);
+    }
+
+    .notes-drawer.open {
+      transform: translateY(0);
+    }
+
+    .notes-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.85rem 2rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .notes-title {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--cyan);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .notes-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1.25rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .notes-close-btn:hover {
+      color: #fff;
+    }
+
+    .notes-body {
+      padding: 1.5rem 2rem 2.5rem;
+      overflow-y: auto;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: #cbd5e1;
+    }
+
+    .notes-section {
+      margin-bottom: 1.25rem;
+    }
+
+    .notes-label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--purple);
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+      display: block;
+    }
+
+    /* Lightbox modal for zooming figures */
+    .lightbox-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(12px);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: all var(--transition-fast);
+      cursor: zoom-out;
+    }
+
+    .lightbox-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .lightbox-modal img {
+      max-width: 95vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 10px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+      border: 1px solid var(--border);
+    }
+
+    /* Keyboard shortcut hint modal */
+    .help-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 210;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all var(--transition-fast);
+    }
+
+    .help-modal.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .help-card {
+      background: #0f172a;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 2rem;
+      max-width: 440px;
+      width: 90%;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    }
+
+    .help-card h3 {
+      font-family: var(--font-display);
+      margin-bottom: 1.25rem;
+      font-size: 1.35rem;
+      color: #fff;
+    }
+
+    .shortcut-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    kbd {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.2rem 0.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--cyan);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1024px) {
+      .slide { padding: 2rem 2.5rem 5rem; }
+      .cards-4, .cards-3 { grid-template-columns: repeat(2, 1fr); }
+      .hud-block-name { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      .cards-2, .cards-3, .cards-4 { grid-template-columns: 1fr; }
+      .slide-title { font-size: 1.8rem; }
+      .hud { bottom: 0.75rem; padding: 0.35rem 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ambient-bg"></div>
+  <div class="ambient-grid"></div>
+
+  <!-- Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- Presentation Deck -->
+  <main class="presentation-deck" id="deck">
+
+    <!-- ==========================================
+         BLOCK 1: TITLE & AUTHORS
+         ========================================== -->
+    <section class="slide active" data-block="01 · TITLE" data-index="1">
+      <div class="tag-badge">DUKE UNIVERSITY · PRATT SCHOOL OF ENGINEERING</div>
+      <h1 class="slide-title">14-Day Hourly Weather Forecast</h1>
+      <p class="slide-subtitle">Continuous 336-Hour Temperature Trajectories at Raleigh-Durham Airport (KRDU)</p>
+      
+      <div class="cards-row cards-3" style="max-width: 820px; margin-top: 1rem;">
+        <div class="card" style="text-align: center; align-items: center;">
+          <div class="card-heading" style="color: var(--cyan);">Vagiz Daudov</div>
+          <div class="card-sub">Duke University</div>
+        </div>
+        <div class="card" style="text-align: center; align-items: center;">
+          <div class="card-heading" style="color: var(--purple);">Arshaan Sayed</div>
+          <div class="card-sub">Duke University</div>
+        </div>
+        <div class="card" style="text-align: center; align-items: center;">
+          <div class="card-heading" style="color: var(--pink);">Mihir Kosuri</div>
+          <div class="card-sub">Duke University</div>
+        </div>
+      </div>
+
+      <div class="speaker-note-content" hidden>
+        <div class="notes-section">
+          <span class="notes-label">🎯 Slide Objective</span>
+          <p>Introduce the team, course context, and the project challenge: forecasting continuous hourly temperatures for 14 full days (336 consecutive hours) at Raleigh-Durham International Airport.</p>
+        </div>
+        <div class="notes-section">
+          <span class="notes-label">🗣️ Speaker Talking Points</span>
+          <p>"Good afternoon everyone. We are Team 2: Vagiz, Arshaan, and Mihir. Today we present our work on 14-day continuous hourly weather forecasting at Raleigh-Durham Airport. Unlike typical weather apps that forecast 1 to 3 days ahead, we tackle a long-horizon 336-hour continuous trajectory using strictly historical sensor and atmospheric reanalysis data."</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         BLOCK 2: PROBLEM STATEMENT
+         ========================================== -->
+    <section class="slide" data-block="02 · PROBLEM STATEMENT" data-index="2">
+      <div class="tag-badge amber">PROBLEM STATEMENT</div>
+      <h2 class="slide-title">The 336-Hour Horizon</h2>
+      <p class="slide-subtitle">Predict continuous hourly surface temperatures for 14 consecutive days without future lookahead</p>
+      
+      <div class="cards-row cards-3">
+        <div class="card">
+          <div class="card-icon">⏱️</div>
+          <div class="card-metric">336 h</div>
+          <div class="card-heading">14 Full Days Ahead</div>
+          <div class="card-sub">Predicting $T_{t+1}, \dots, T_{t+336}$ simultaneously.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">📍</div>
+          <div class="card-metric purple">KRDU</div>
+          <div class="card-heading">Raleigh-Durham Airport</div>
+          <div class="card-sub">Direct NOAA/NWS sensor observations (WBAN: 13722).</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔒</div>
+          <div class="card-metric emerald">Zero</div>
+          <div class="card-heading">Lookahead Leakage</div>
+          <div class="card-sub">Strict cutoff: Only sensor history up to midnight is used.</div>
+        </div>
+      </div>
+
+      <div class="speaker-note-content" hidden>
+        <div class="notes-section">
+          <span class="notes-label">🎯 Slide Objective</span>
+          <p>Frame the concrete scope and difficulty of the 336-hour operational forecasting challenge.</p>
+        </div>
+        <div class="notes-section">
+          <span class="notes-label">🗣️ Speaker Talking Points</span>
+          <p>"Here is the exact task: starting from midnight on any forecast date, our models must predict all 336 consecutive hourly temperatures for the next two weeks. We do NOT use future numerical weather predictions from NOAA or GFS. We rely entirely on antecedent local sensor measurements, atmospheric dynamics, and deterministic celestial physics."</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         BLOCK 3: DATA & PHYSICS (SLIDE 3)
+         ========================================== -->
+    <section class="slide" data-block="03 · DATA & PHYSICS" data-index="3">
+      <div class="tag-badge">DATA SOURCING</div>
+      <h2 class="slide-title">Dual Atmospheric Stream</h2>
+      <p class="slide-subtitle">26 continuous years (2000–2026) of hourly observations: 234,144 timesteps</p>
+      
+      <div class="cards-row cards-2">
+        <div class="card">
+          <div class="card-icon">📡</div>
+          <div class="card-metric">ASOS</div>
+          <div class="card-heading">NOAA Ground-Truth Sensors</div>
+          <div class="card-sub">Direct 2m temperature (`target_tmpf`), dew point, barometric surface pressure, wind vectors, and cloud cover at KRDU.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🌍</div>
+          <div class="card-metric purple">ERA5-Land</div>
+          <div class="card-heading">Atmospheric Reanalysis</div>
+          <div class="card-sub">High-resolution boundary layer thermodynamics via Open-Meteo API: vapor pressure deficit (VPD), specific humidity, solar radiation.</div>
+        </div>
+      </div>
+
+      <div class="speaker-note-content" hidden>
+        <div class="notes-section">
+          <span class="notes-label">🎯 Slide Objective</span>
+          <p>Highlight the scale, temporal continuity, and complementary data streams.</p>
+        </div>
+        <div class="notes-section">
+          <span class="notes-label">🗣️ Speaker Talking Points</span>
+          <p>"To build high-capacity models, we collected 26 continuous years of hourly weather data from 2000 through late 2026—over 234,000 hourly steps. We merge two high-fidelity streams: NOAA's Automated Surface Observing System (ASOS) station at KRDU for ground truth, and ERA5-Land reanalysis for boundary-layer thermodynamic variables like vapor pressure deficit and humidity."</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         BLOCK 3: DATA & PHYSICS (SLIDE 4)
+         ========================================== -->
+    <section class="slide" data-block="03 · DATA & PHYSICS" data-index="4">
+      <div class="tag-badge purple">CELESTIAL MECHANICS</div>
+      <h2 class="slide-title">Deterministic Solar Physics</h2>
+      <p class="slide-subtitle">NOAA solar position equations provide exact future extraterrestrial boundary conditions</p>
+      
+      <div class="formula-box">
+        $\text{Solar Zenith Angle } (\theta_z) \quad\longrightarrow\quad I_{\text{ext}} = I_{\text{sc}} \cdot E_0 \cdot \cos(\theta_z)^+$
+      </div>
+
+      <div class="cards-row cards-2">
+        <div class="card">
+          <div class="card-heading">☀️ Solar Zenith & Elevation</div>
+          <div class="card-sub">Exact geometric angles computed deterministically across past and future 336h horizons without forecast uncertainty.</div>
+        </div>
+        <div class="card">
+          <div class="card-heading">⚡ Extraterrestrial Solar Flux</div>
+          <div class="card-sub">Calculates incoming top-of-atmosphere radiative flux ($W/m^2$), driving the fundamental diurnal heating cycle.</div>
+        </div>
+      </div>
+
+      <div class="speaker-note-content" hidden>
+        <div class="notes-section">
+          <span class="notes-label">🎯 Slide Objective</span>
+          <p>Explain how astronomical domain knowledge gives models a reliable, leakage-free future signal.</p>
+        </div>
+        <div class="notes-section">
+          <span class="notes-label">🗣️ Speaker Talking Points</span>
+          <p>"While weather chaotic dynamics are hard to predict, orbital mechanics are entirely deterministic. Using NOAA's astronomical equations, we compute the exact Solar Zenith Angle and extraterrestrial solar irradiance for every hour of the 14-day future window. This gives our models an unambiguous diurnal clock into the future."</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         BLOCK 3: DATA & PHYSICS (SLIDE 5)
+         ========================================== -->
+    <section class="slide" data-block="03 · DATA & PHYSICS" data-index="5">
+      <div class="tag-badge amber">THE CHALLENGE</div>
+      <h2 class="slide-title">Why Weather Forecasting Is Hard</h2>
+      <p class="slide-subtitle">Two structural failure modes in long-horizon neural forecasting</p>
+      
+      <div class="cards-row cards-2">
+        <div class="card" style="border-color: rgba(239, 68, 68, 0.3);">
+          <div class="card-icon">🌪️</div>
+          <div class="card-heading" style="color: var(--red);">1. Autoregressive Compounding</div>
+          <div class="card-sub">Step-by-step rolling prediction ($t \to t+1 \to t+2$) compounds error exponentially. By Day 3–4, trajectories diverge completely into unphysical chaos.</div>
+        </div>
+        <div class="card" style="border-color: rgba(245, 158, 11, 0.3);">
+          <div class="card-icon">📉</div>
+          <div class="card-heading" style="color: var(--amber);">2. Conditional Mean Flattening</div>
+          <div class="card-sub">Standard MSE loss encourages models to hedge bets under uncertainty by predicting the conditional mean. The mean of an uncertain sine wave is a flat line $\to$ diurnal collapse!</div>
+        </div>
+      </div>
+
+      <div class="speaker-note-content" hidden>
+        <div class="notes-section">
+          <span class="notes-label">🎯 Slide Objective</span>
+          <p>Diagnose the two major failure modes of standard time-series models on multi-week weather.</p>
+        </div>
+        <div class="notes-section">
+          <span class="notes-label">🗣️ Speaker Talking Points</span>
+          <p>"Why can't you just throw an LSTM or standard autoregressive transformer at this? First, autoregressive compounding: errors at hour 24 feed into hour 25, creating exponential divergence by day 4. Second, diurnal collapse: because multi-week weather has inherent uncertainty, minimizing squared error forces the model to predict the average of all possible sine waves. That average is a flat line—the daily 20-degree diurnal temperature cycle completely collapses."</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         BLOCK 3: DATA & PHYSICS (SLIDE 6)
+         ========================================== -->
+    <section class="slide" data-block="03 · DATA & PHYSICS" data-index="6">
+      <div class="tag-badge emerald">PHYSICAL ASSUMPTIONS</div>
+      <h2 class="slide-title">Core Physical Assumptions</h2>
+      <p class="slide-subtitle">Deriving architectural inductive biases from atmospheric thermodynamics</p>
+      
+      <div class="cards-row cards-2">
+        <div class="card">
+          <div class="card-metric emerald">01</div>
+          <div class="card-heading">Diurnal Invariance</div>
+          <div class="card-sub">Solar radiation forces a daily 24-hour cycle. The day/night temperature oscillation does not vanish even when long-range synoptic predictability decays.</div>
+        </div>
+        <div class="card">
+          <div class="card-metric emerald">02</div>
+          <div class="card-heading">Climatological Reversion</div>
+          <div class="card-sub">Beyond the 7-day deterministic limit, atmospheric memory decays, and local temperature anomalies must revert smoothly toward historical climatology.</div>
+        </div>
+      </div>
+
+      <div class="speaker-note-content" hidden>
+        <div class="notes-section">
+          <span class="notes-label">🎯 Slide Objective</span>
+          <p>Explain the two key physical assumptions that motivate our residual decomposition architecture.</p>
+        </div>
+        <div class="notes-section">
+          <span class="notes-label">🗣️ Speaker Talking Points</span>
+          <p>"To solve these failure modes, we establish two core physical assumptions: First, Diurnal Invariance—the sun rises and sets regardless of chaotic squalls, so our architecture must explicitly preserve daily 24-hour oscillations. Second, Climatological Reversion—after 7 to 10 days, synoptic memory is lost, and the most physically optimal forecast is the 26-year historical climatological curve rather than a flat average."</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         BLOCK 4: OBJECTIVE & FORMULATION (SLIDE 7)
+         ========================================== -->
+    <section class="slide" data-block="04 · OBJECTIVE & FORMULATION" data-index="7">
+      <div class="tag-badge">OPTIMIZATION OBJECTIVE</div>
+      <h2 class="slide-title">Residual Climatology Formulation</h2>
+      <p class="slide-subtitle">Predicting atmospheric residual anomalies over historical climatology</p>
+      
+      <div class="formula-box">
+        $\hat{y}(t) = \hat{y}_{\text{clim}}(t) + \hat{r}_\theta(t)$
+      </div>
+
+      <div class="cards-row cards-2">
+        <div class="card">
+          <div class="card-heading">1. Climatological Prior $\hat{y}_{\text{clim}}(t)$</div>
+          <div class="card-sub">Zero-parameter empirical 26-year mean for every (Day of Year, Hour) tuple. Anchors the baseline seasonal and diurnal cycles.</div>
+        </div>
+        <div class="card">
+          <div class="card-heading">2. Neural Residual $\hat{r}_\theta(t)$</div>
+          <div class="card-sub">Deep neural networks predict the synoptic departure/anomaly. Reverts naturally to zero beyond predictability limits.</div>
+        </div>
+      </div>
+
+      <div class="speaker-note-content" hidden>
+        <div class="notes-section">
+          <span class="notes-label">🎯 Slide Objective</span>
+          <p>Show how mathematical formulation eliminates diurnal collapse.</p>
+        </div>
+        <div class="notes-section">
+          <span class="notes-label">🗣️ Speaker Talking Points</span>
+          <p>"Instead of asking the neural network to learn both raw temperatures and seasonal cycles from scratch, we decompose the target: temperature equals 26-year historical climatology plus a neural residual anomaly. If the network becomes uncertain on Day 12, the residual decays to zero, and the forecast gracefully reverts to the diurnal climatological wave instead of collapsing into a flat line."</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         BLOCK 4: OBJECTIVE & FORMULATION (SLIDE 8)
+         ========================================== -->
+    <section class="slide" data-block="04 · OBJECTIVE & FORMULATION" data-index="8">
+      <div class="tag-badge purple">EVALUATION METRICS</div>
+      <h2 class="slide-title">Loss & Reporting Metrics</h2>
+      <p class="slide-subtitle">Multi-horizon loss optimized across all 336 future hours simultaneously</p>
+      
+      <div class="formula-box">
+        $\mathcal{L}_{\text{MAE}} = \frac{1}{336}\sum_{h=1}^{336} |\hat{y}_{t+h} - y_{t+h}|$
+      </div>
+
+      <div class="cards-row cards-2">
+        <div class="card">
+          <div class="card-metric">MAE</div>
+          <div class="card-heading">Mean Absolute Error (°F)</div>
+          <div class="card-sub">Primary benchmark metric. Measures average forecast deviation across all 336 hours in degrees Fahrenheit.</div>
+        </div>
+        <div class="card">
+          <div class="card-metric purple">RMSE</div>
+          <div class="card-heading">Root Mean Squared Error (°F)</div>
+          <div class="card-sub">Secondary metric. Heavily penalizes large synoptic busts, rapid front mispredictions, and extreme errors.</div>
+        </div>
+      </div>
+
+      <div class="speaker-note-content" hidden>
+        <div class="notes-section">
+          <span class="notes-label">🎯 Slide Objective</span>
+          <p>Clarify our primary and secondary metrics.</p>
+        </div>
+        <div class="notes-section">
+          <span class="notes-label">🗣️ Speaker Talking Points</span>
+          <p>"Our primary metric is Mean Absolute Error (MAE) in degrees Fahrenheit across the full 336-hour window. We also report Root Mean Squared Error (RMSE), which penalizes large misses such as mispredicting the timing of a severe cold front. All models directly optimize multi-horizon error in a single joint forward pass."</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         BLOCK 5: SETUP & SPLIT (SLIDE 9)
+         ========================================== -->
+    <section class="slide" data-block="05 · EXPERIMENTAL SETUP" data-index="9">
+      <div class="tag-badge emerald">EXPERIMENTAL SETUP</div>
+      <h2 class="slide-title">Zero-Leakage Temporal Split</h2>
+      <p class="slide-subtitle">Strict temporal isolation across 26 years; rolling multi-window evaluation</p>
+      
+      <div class="cards-row cards-4">
+        <div class="card">
+          <div class="card-metric" style="font-size: 2rem;">Train</div>
+          <div class="card-heading">2000 – Apr 2026</div>
+          <div class="card-sub">230,088 continuous hours. All scalers and quantiles fit strictly here.</div>
+        </div>
+        <div class="card">
+          <div class="card-metric purple" style="font-size: 2rem;">Val</div>
+          <div class="card-heading">Apr – Jun 2026</div>
+          <div class="card-sub">78 rolling 14-day windows (daily 24h stride). Spring season.</div>
+        </div>
+        <div class="card">
+          <div class="card-metric amber" style="font-size: 2rem;">Test</div>
+          <div class="card-heading">Jul – Sep 16, 2026</div>
+          <div class="card-sub">65 rolling 14-day windows (daily 24h stride). Summer season.</div>
+        </div>
+        <div class="card">
+          <div class="card-metric emerald" style="font-size: 2rem;">Locked</div>
+          <div class="card-heading">Sep 17 – 30, 2026</div>
+          <div class="card-sub">Official SuperTest window (336 hours preserved untouched).</div>
+        </div>
+      </div>
+
+      <div class="speaker-note-content" hidden>
+        <div class="notes-section">
+          <span class="notes-label">🎯 Slide Objective</span>
+          <p>Detail the temporal split and rolling window evaluation protocol.</p>
+        </div>
+        <div class="notes-section">
+          <span class="notes-label">🗣️ Speaker Talking Points</span>
+          <p>"To prevent data leakage, we enforce strict chronological splits: 26 years of training data through April 1, 2026. Rather than testing on just one window, we evaluate across rolling 14-day windows with a daily stride—78 validation windows in Spring and 65 holdout test windows in Summer. Finally, we hold out September 17 to 30 as a locked SuperTest window that was never touched during development."</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         BLOCK 6: APPROACH 1 — CLASSICAL (SLIDE 10)
+         ========================================== -->
+    <section class="slide" data-block="06 · APPROACH 1: CLASSICAL" data-index="10">
+      <div class="tag-badge">APPROACH 1: CLASSICAL ML</div>
+      <h2 class="slide-title">Ridge Regression & LightGBM</h2>
+      <p class="slide-subtitle">Direct multi-output projection and gradient-boosted decision trees</p>
+      
+      <div class="cards-row cards-2">
+        <div class="card">
+          <div class="card-icon">📈</div>
+          <div class="card-heading" style="color: var(--cyan);">Linear Ridge ($\alpha = 50.0$)</div>
+          <div class="card-sub">Closed-form L2 projection mapping 168-hour antecedent state (current temperature, pressure tendencies, wind vectors, rolling momentum) directly to 336 future residual anomalies simultaneously.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🌲</div>
+          <div class="card-heading" style="color: var(--purple);">LightGBM (GBDT)</div>
+          <div class="card-sub">150 gradient-boosted decision trees (`num_leaves=31`, `lr=0.03`) trained on lag statistics, rolling momentum windows, solar angles, and calendar features. Strong tabular baseline.</div>
+        </div>
+      </div>
+
+      <div class="speaker-note-content" hidden>
+        <div class="notes-section">
+          <span class="notes-label">🎯 Slide Objective</span>
+          <p>Present the classical ML baselines and their operational formulations.</p>
+        </div>
+        <div class="notes-section">
+          <span class="notes-label">🗣️ Speaker Talking Points</span>
+          <p>"For our classical benchmarks, we implemented two models: First, multi-output Ridge Regression with L2 regularization ($\alpha=50$), projecting a 168-hour antecedent history vector directly to all 336 future residuals. Second, LightGBM with 150 gradient-boosted trees over engineered lag features, rolling statistics, and solar angles. Both models provide strong benchmarks by exploiting atmospheric persistence at the forecast cutoff."</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         BLOCK 7: APPROACH 2 — DL (SLIDE 11)
+         ========================================== -->
+    <section class="slide" data-block="07 · APPROACH 2: DEEP LEARNING" data-index="11">
+      <div class="tag-badge purple">APPROACH 2: DEEP LEARNING</div>
+      <h2 class="slide-title">PatchTST Backbone</h2>
+      <p class="slide-subtitle">Channel-independent transformer with 24-hour diurnal patching</p>
+      
+      <div class="image-container" onclick="openLightbox('report/patchtst_architecture_diagram.png')">
+        <img src="report/patchtst_architecture_diagram.png" alt="PatchTST Architecture Diagram">
+      </div>
+      <div class="image-caption">🔍 Click to enlarge · Channel Independence + 24h Diurnal Patching + Multi-Horizon Head</div>
+
+      <div class="speaker-note-content" hidden>
+        <div class="notes-section">
+          <span class="notes-label">🎯 Slide Objective</span>
+          <p>Walk through the core architectural pillars of PatchTST.</p>
+        </div>
+        <div class="notes-section">
+          <span class="notes-label">🗣️ Speaker Talking Points</span>
+          <p>"Our primary deep learning architecture is PatchTST, shown here in the diagram. It has three key innovations: First, Channel Independence—multivariate physical channels like temperature, pressure, and wind are split and processed independently, preventing noisy wind gusts from corrupting thermal features. Second, 24-hour Diurnal Patching—each patch represents one full day, so self-attention operates across synoptic weather transitions rather than hourly micro-steps. Third, a direct multi-horizon head projecting all 336 future hours simultaneously."</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         BLOCK 7: APPROACH 2 — DL (SLIDE 12)
+         ========================================== -->
+    <section class="slide" data-block="07 · APPROACH 2: DEEP LEARNING" data-index="12">
+      <div class="tag-badge purple">APPROACH 2: DEEP LEARNING</div>
+      <h2 class="slide-title">DenseCrossTransformer (DCT)</h2>
+      <p class="slide-subtitle">Piecewise Linear Encoding & The Dense Gradient Highway</p>
+      
+      <div class="cards-row cards-2">
+        <div class="card">
+          <div class="card-icon">📐</div>
+          <div class="card-heading" style="color: var(--cyan);">64-Bin PLE Encoding</div>
+          <div class="card-sub">Piecewise Linear Encoding over 64 empirical training quantiles. Converts continuous temperature into smooth continuous-piece linear activations.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <div class="card-heading" style="color: var(--purple);">The Dense Gradient Highway</div>
+          <div class="card-sub">Calendar embeddings (Month, Hour, Year) concatenated at <b>every intermediate layer</b>. Direct uninterrupted gradients eliminate attention dispersion.</div>
+        </div>
+      </div>
+
+      <div class="speaker-note-content" hidden>
+        <div class="notes-section">
+          <span class="notes-label">🎯 Slide Objective</span>
+          <p>Introduce the DenseCrossTransformer architecture and explain its unique strengths.</p>
+        </div>
+        <div class="notes-section">
+          <span class="notes-label">🗣️ Speaker Talking Points</span>
+          <p>"We also developed DenseCrossTransformer. Instead of tokenizing continuous features linearly, it uses Piecewise Linear Encoding (PLE) across 64 empirical quantiles. More importantly, it employs a 'Dense Highway': calendar embeddings are injected into every single layer. This creates direct gradient pathways that prevent vanishing gradients and allow the network to learn rich calendar representations across 26 years."</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         BLOCK 8: RESULTS TABLE (SLIDE 13)
+         ========================================== -->
+    <section class="slide" data-block="08 · BENCHMARK RESULTS" data-index="13">
+      <div class="tag-badge emerald">BENCHMARK RESULTS</div>
+      <h2 class="slide-title">Master Evaluation Benchmark</h2>
+      <p class="slide-subtitle">Single row per model, ordered: Climatology, Ridge, LightGBM, PatchTST, DCT</p>
+      
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Model Architecture</th>
+              <th>Val MAE (°F)</th>
+              <th>Test MAE (°F)</th>
+              <th>SuperTest (Zero-Shot)</th>
+              <th>SuperTest (Retrained)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Climatology Base</strong></td>
+              <td class="metric-cell">7.43</td>
+              <td class="metric-cell">4.35</td>
+              <td class="metric-cell">6.94</td>
+              <td class="metric-cell">6.94</td>
+            </tr>
+            <tr>
+              <td><strong>Linear Ridge ($\alpha = 50.0$)</strong></td>
+              <td class="metric-cell">7.02</td>
+              <td class="metric-cell">4.14</td>
+              <td class="metric-cell" style="color: var(--emerald);">5.86</td>
+              <td class="metric-cell" style="color: var(--emerald);">5.86</td>
+            </tr>
+            <tr>
+              <td><strong>LightGBM (GBDT)</strong></td>
+              <td class="metric-cell" style="color: var(--cyan);">6.98</td>
+              <td class="metric-cell">4.17</td>
+              <td class="metric-cell" style="color: var(--emerald);">5.90</td>
+              <td class="metric-cell" style="color: var(--emerald);">5.90</td>
+            </tr>
+            <tr class="highlight-champion">
+              <td>
+                <strong>PatchTST</strong> 
+                <span class="badge-champ">🏆 Champion</span>
+              </td>
+              <td class="metric-cell">7.25</td>
+              <td class="metric-cell" style="color: var(--cyan); font-size: 1.1rem;">3.87</td>
+              <td class="metric-cell">6.95</td>
+              <td class="metric-cell" style="color: var(--cyan);">6.88</td>
+            </tr>
+            <tr>
+              <td><strong>DenseCrossTransformer (DCT)</strong></td>
+              <td class="metric-cell">7.15</td>
+              <td class="metric-cell">5.31</td>
+              <td class="metric-cell">8.14</td>
+              <td class="metric-cell">7.10</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="speaker-note-content" hidden>
+        <div class="notes-section">
+          <span class="notes-label">🎯 Slide Objective</span>
+          <p>Present the unified master results table in the requested order and highlight the key empirical findings.</p>
+        </div>
+        <div class="notes-section">
+          <span class="notes-label">🗣️ Speaker Talking Points</span>
+          <p>"Here is our master evaluation table, presented in the requested sequence. Looking at the holdout test set across 65 summer windows: PatchTST establishes state-of-the-art performance at 3.87°F MAE, outperforming classical models and breaking the 4.0°F barrier. On the locked SuperTest, Ridge and LightGBM performed exceptionally well around 5.86°F because they exploited the warm initial conditions of an unseasonal heat wave, while retraining on Spring and Summer data improved deep learning models significantly."</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         BLOCK 9: ERROR ANALYSIS — PART 1 (SLIDE 14)
+         ========================================== -->
+    <section class="slide" data-block="09 · ERROR DYNAMICS" data-index="14">
+      <div class="tag-badge amber">SYNOPTIC METEOROLOGY</div>
+      <h2 class="slide-title">Why Val Error > Test Error</h2>
+      <p class="slide-subtitle">Synoptic atmospheric dynamics: Spring turbulence vs. Summer subtropical persistence</p>
+      
+      <div class="cards-row cards-2">
+        <div class="card" style="border-color: rgba(239, 68, 68, 0.3);">
+          <div class="card-icon">⛈️</div>
+          <div class="card-metric" style="color: var(--red);">7.0°F – 7.4°F</div>
+          <div class="card-heading">Spring Validation (Apr–Jun)</div>
+          <div class="card-sub">Polar jet stream overhead; baroclinic instability drives frequent cold front collisions, severe squalls, and chaotic 20°F–30°F day-to-day temperature swings.</div>
+        </div>
+        <div class="card" style="border-color: rgba(16, 185, 129, 0.3);">
+          <div class="card-icon">☀️</div>
+          <div class="card-metric emerald">3.8°F – 4.3°F</div>
+          <div class="card-heading">Summer Test (Jul–Sep)</div>
+          <div class="card-sub">The Bermuda Subtropical High parks over central NC. Quasi-stationary air masses with highly predictable solar diurnal heating curves.</div>
+        </div>
+      </div>
+
+      <div class="speaker-note-content" hidden>
+        <div class="notes-section">
+          <span class="notes-label">🎯 Slide Objective</span>
+          <p>Explain why validation error is ~3°F higher than test error using real meteorological mechanics.</p>
+        </div>
+        <div class="notes-section">
+          <span class="notes-label">🗣️ Speaker Talking Points</span>
+          <p>"You might notice that validation error is around 7.2°F while test error is under 4.0°F. This is not overfitting; it is fundamental synoptic meteorology. In Spring (validation period), the jet stream sits directly over North Carolina, causing cold Canadian fronts to collide with warm Gulf moisture—producing violent 20-to-30 degree swings that are inherently chaotic at two-week horizons. By Summer (test period), the Bermuda Subtropical High parks over the region, creating stable, persistent air masses dominated by clean, predictable diurnal heating."</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         BLOCK 9: ERROR ANALYSIS — PART 2 (SLIDE 15)
+         ========================================== -->
+    <section class="slide" data-block="09 · ERROR DYNAMICS" data-index="15">
+      <div class="tag-badge amber">ANOMALY ANALYSIS</div>
+      <h2 class="slide-title">Why Val Error ≈ SuperTest Error</h2>
+      <p class="slide-subtitle">SuperTest is a single 14-day window during an extreme late-season heat wave</p>
+      
+      <div class="cards-row cards-2">
+        <div class="card">
+          <div class="card-icon">🌡️</div>
+          <div class="card-metric amber">92.0°F</div>
+          <div class="card-heading">Late-September Heat Wave</div>
+          <div class="card-sub">Actual temperatures on Sep 17 reached 92°F, maintaining mid-80s highs through Sep 22. Historical 26-year climatology was 72°F! Climatology MAE spiked to 8.05°F in Week 1.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">📊</div>
+          <div class="card-metric purple">N = 1</div>
+          <div class="card-heading">Small Horizon Variance</div>
+          <div class="card-sub">Test evaluated 65 rolling windows; SuperTest is a single 14-day window containing an extreme climatic outlier. Retraining on Train+Val corrected deep models by over -1.04°F.</div>
+        </div>
+      </div>
+
+      <div class="speaker-note-content" hidden>
+        <div class="notes-section">
+          <span class="notes-label">🎯 Slide Objective</span>
+          <p>Explain why SuperTest error aligns closer to validation error than test error.</p>
+        </div>
+        <div class="notes-section">
+          <span class="notes-label">🗣️ Speaker Talking Points</span>
+          <p>"Why is SuperTest error around 6.9°F, similar to Spring validation? The answer is sample size and an unseasonal heat wave. Between September 17 and 22, Raleigh experienced an extreme late-summer heat wave reaching 92°F—20 degrees above the historical 72°F average. Because SuperTest is a single 14-day evaluation sample rather than 65 rolling windows, it caught an unseasonal weather anomaly. When we retrained our deep models on data up to July 1, the 64-bin DenseNet improved by over 1.0°F MAE."</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         BLOCK 10: TIME EMBEDDINGS (SLIDE 16)
+         ========================================== -->
+    <section class="slide" data-block="10 · EMBEDDING PHYSICS" data-index="16">
+      <div class="tag-badge">REPRESENTATION LEARNING</div>
+      <h2 class="slide-title">Do Embeddings Learn Real Physics?</h2>
+      <p class="slide-subtitle">Given only integer tokens (1–12), does the latent space discover physical temperature?</p>
+      
+      <div class="formula-box">
+        $\mathbf{u}_T = \frac{\mathbf{w}^*}{\|\mathbf{w}^*\|_2} \in \mathbb{R}^{16} \quad\longrightarrow\quad s_m = \langle \mathbf{e}_m, \mathbf{u}_T \rangle = \sum_{k=1}^{16} e_{m, k} \cdot u_{T, k}$
+      </div>
+
+      <div class="cards-row cards-2">
+        <div class="card">
+          <div class="card-heading">Concept Direction Vector ($\mathbf{u}_T$)</div>
+          <div class="card-sub">Discovered via linear probing. Represents the unit 'thermal axis' pointing toward maximum heat inside the 16D month embedding space.</div>
+        </div>
+        <div class="card">
+          <div class="card-heading">Zero Explicit Supervision</div>
+          <div class="card-sub">The embedding table received only discrete categorical indices (1 to 12)—never raw ground-truth temperature labels!</div>
+        </div>
+      </div>
+
+      <div class="speaker-note-content" hidden>
+        <div class="notes-section">
+          <span class="notes-label">🎯 Slide Objective</span>
+          <p>Formulate the linear concept probing experiment on month embeddings.</p>
+        </div>
+        <div class="notes-section">
+          <span class="notes-label">🗣️ Speaker Talking Points</span>
+          <p>"A fundamental question in representation learning is: did our neural network memorize arbitrary calendar tokens, or did it discover real physical laws? To test this, we performed linear concept probing on the 16-dimensional month embedding space. We searched for a single 1D unit vector, $\mathbf{u}_T$, that corresponds to physical warmth. Remember: the model was NEVER given temperature labels for the calendar tokens; it only received integers 1 to 12."</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         BLOCK 10: TIME EMBEDDINGS (SLIDE 17)
+         ========================================== -->
+    <section class="slide" data-block="10 · EMBEDDING PHYSICS" data-index="17">
+      <div class="tag-badge emerald">REPRESENTATION LEARNING</div>
+      <h2 class="slide-title">Month-Temperature Resonance</h2>
+      <p class="slide-subtitle">Dot product projection achieves r = 0.9838 (R² = 0.9679) with ground-truth temperatures</p>
+      
+      <div class="image-container" onclick="openLightbox('report/month_temperature_dot_product_deep_dive.png')">
+        <img src="report/month_temperature_dot_product_deep_dive.png" alt="Month Temperature Dot Product Deep Dive">
+      </div>
+      <div class="image-caption">🔍 Click to enlarge · Probing Alignment (r=0.984) · Matched vs Mismatched PLE Dot Products · Resonance Heatmap</div>
+
+      <div class="speaker-note-content" hidden>
+        <div class="notes-section">
+          <span class="notes-label">🎯 Slide Objective</span>
+          <p>Showcase the empirical proof that embeddings learn true thermodynamic directions.</p>
+        </div>
+        <div class="notes-section">
+          <span class="notes-label">🗣️ Speaker Talking Points</span>
+          <p>"Here is the result, shown across the three panels. In Panel 1, the dot product of month embeddings with our thermal concept axis achieves a remarkable Pearson correlation of r = 0.9838—an R-squared of nearly 97%—with real ground truth temperatures! July sits at +1.11, while January sits at -1.20. In Panels 2 and 3, bilinear dot products with Piecewise Linear Encoding (PLE) confirm that continuous temperature representations and discrete month tokens resonate in a unified thermodynamic coordinate space."</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         BLOCK 10: TAKEAWAYS & CONCLUSION (SLIDE 18)
+         ========================================== -->
+    <section class="slide" data-block="10 · TAKEAWAYS" data-index="18">
+      <div class="tag-badge">SUMMARY & CONCLUSIONS</div>
+      <h2 class="slide-title">Key Takeaways</h2>
+      <p class="slide-subtitle">Core conclusions from 14-day operational weather forecasting</p>
+      
+      <div class="cards-row cards-3">
+        <div class="card">
+          <div class="card-icon">🛡️</div>
+          <div class="card-heading" style="color: var(--cyan);">1. Residual Climatology</div>
+          <div class="card-sub">Decomposing predictions into empirical climatology + neural residual anomaly completely prevents multi-week diurnal cycle collapse.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🏆</div>
+          <div class="card-heading" style="color: var(--emerald);">2. PatchTST SOTA</div>
+          <div class="card-sub">24-hour diurnal patching and channel independence achieved state-of-the-art holdout test performance at <b>3.87°F MAE</b>.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🧠</div>
+          <div class="card-heading" style="color: var(--purple);">3. Physical Embeddings</div>
+          <div class="card-sub">Decadal DenseNet time embeddings autonomously self-organize along thermodynamic axes ($r=0.984$) and transfer across architectures.</div>
+        </div>
+      </div>
+
+      <div class="speaker-note-content" hidden>
+        <div class="notes-section">
+          <span class="notes-label">🎯 Slide Objective</span>
+          <p>Deliver punchy final takeaways and open the floor for questions.</p>
+        </div>
+        <div class="notes-section">
+          <span class="notes-label">🗣️ Speaker Talking Points</span>
+          <p>"To conclude: First, residual climatology is an essential inductive bias that prevents long-horizon diurnal collapse. Second, PatchTST sets the state-of-the-art on rolling test windows at 3.87°F MAE. Third, neural time embeddings learn genuine physical thermodynamic coordinates that can be transferred across architectures. Thank you, and we welcome any questions."</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Floating Presenter HUD -->
+  <footer class="hud" role="toolbar" aria-label="Presentation Controls">
+    <div class="hud-block-name" id="hudBlockName">01 · TITLE</div>
+    <div class="hud-divider"></div>
+    <button class="hud-btn" id="prevBtn" title="Previous Slide (← / Backspace)" aria-label="Previous Slide">‹</button>
+    <div class="hud-counter" id="hudCounter">01 / 18</div>
+    <button class="hud-btn" id="nextBtn" title="Next Slide (→ / Space)" aria-label="Next Slide">›</button>
+    <div class="hud-divider"></div>
+    <button class="hud-btn" id="notesToggleBtn" title="Toggle Speaker Notes (N or S)" aria-label="Toggle Speaker Notes">📝</button>
+    <div class="hud-timer" id="hudTimer" title="Presentation Timer (Click to Reset)">00:00</div>
+    <button class="hud-btn" id="fullscreenBtn" title="Toggle Fullscreen (F)" aria-label="Toggle Fullscreen">⛶</button>
+    <button class="hud-btn" id="helpBtn" title="Keyboard Shortcuts (?)" aria-label="Keyboard Shortcuts">⌨</button>
+  </footer>
+
+  <!-- Speaker Notes Drawer -->
+  <aside class="notes-drawer" id="notesDrawer" aria-label="Speaker Notes">
+    <div class="notes-header">
+      <div class="notes-title">
+        <span>📝 Speaker Talking Points</span>
+        <span id="notesSlideTag" style="color: var(--text-muted); font-size: 0.75rem;">(Slide 1)</span>
+      </div>
+      <button class="notes-close-btn" id="notesCloseBtn" title="Close Notes (Escape or N)">✕</button>
+    </div>
+    <div class="notes-body" id="notesBody">
+      <!-- Injected dynamically based on active slide -->
+    </div>
+  </aside>
+
+  <!-- Lightbox Modal for Full-Res Image Zoom -->
+  <div class="lightbox-modal" id="lightboxModal" onclick="closeLightbox()">
+    <img id="lightboxImg" src="" alt="Enlarged Diagram">
+  </div>
+
+  <!-- Keyboard Shortcuts Modal -->
+  <div class="help-modal" id="helpModal" onclick="closeHelp(event)">
+    <div class="help-card" onclick="event.stopPropagation()">
+      <h3>Keyboard Shortcuts</h3>
+      <div class="shortcut-row"><span>Next Slide</span> <kbd>→</kbd> <kbd>Space</kbd> <kbd>PageDown</kbd></div>
+      <div class="shortcut-row"><span>Previous Slide</span> <kbd>←</kbd> <kbd>Backspace</kbd> <kbd>PageUp</kbd></div>
+      <div class="shortcut-row"><span>Speaker Notes</span> <kbd>N</kbd> <kbd>S</kbd></div>
+      <div class="shortcut-row"><span>Toggle Fullscreen</span> <kbd>F</kbd></div>
+      <div class="shortcut-row"><span>First / Last Slide</span> <kbd>Home</kbd> <kbd>End</kbd></div>
+      <div class="shortcut-row"><span>Help Modal</span> <kbd>?</kbd></div>
+      <div style="margin-top: 1.25rem; text-align: right;">
+        <button class="tag-badge" style="cursor: pointer;" onclick="toggleHelp()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Presentation State
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const totalSlides = slides.length;
+    let currentSlide = 0;
+
+    // Elements
+    const progressBar = document.getElementById('progressBar');
+    const hudCounter = document.getElementById('hudCounter');
+    const hudBlockName = document.getElementById('hudBlockName');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const notesDrawer = document.getElementById('notesDrawer');
+    const notesBody = document.getElementById('notesBody');
+    const notesSlideTag = document.getElementById('notesSlideTag');
+    const notesToggleBtn = document.getElementById('notesToggleBtn');
+    const notesCloseBtn = document.getElementById('notesCloseBtn');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const hudTimer = document.getElementById('hudTimer');
+    const lightboxModal = document.getElementById('lightboxModal');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const helpModal = document.getElementById('helpModal');
+    const helpBtn = document.getElementById('helpBtn');
+
+    // Timer State
+    let timerSeconds = 0;
+    let timerInterval = null;
+
+    function startTimer() {
+      if (timerInterval) return;
+      timerInterval = setInterval(() => {
+        timerSeconds++;
+        const mins = String(Math.floor(timerSeconds / 60)).padStart(2, '0');
+        const secs = String(timerSeconds % 60).padStart(2, '0');
+        hudTimer.textContent = `${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function resetTimer() {
+      timerSeconds = 0;
+      hudTimer.textContent = '00:00';
+    }
+
+    hudTimer.addEventListener('click', () => {
+      if (confirm('Reset presentation timer to 00:00?')) {
+        resetTimer();
+      }
+    });
+
+    // Slide Navigation
+    function updateSlide(index) {
+      if (index < 0) index = 0;
+      if (index >= totalSlides) index = totalSlides - 1;
+
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+      });
+
+      currentSlide = index;
+
+      // Update Counter and Progress
+      const displayIndex = String(index + 1).padStart(2, '0');
+      const displayTotal = String(totalSlides).padStart(2, '0');
+      hudCounter.textContent = `${displayIndex} / ${displayTotal}`;
+      
+      const progressPercent = ((index) / (totalSlides - 1)) * 100;
+      progressBar.style.width = `${progressPercent}%`;
+
+      // Update Block Tag
+      const activeSlide = slides[index];
+      const blockName = activeSlide.getAttribute('data-block') || '';
+      hudBlockName.textContent = blockName;
+
+      // Update Speaker Notes
+      const noteContentEl = activeSlide.querySelector('.speaker-note-content');
+      if (noteContentEl) {
+        notesBody.innerHTML = noteContentEl.innerHTML;
+        notesSlideTag.textContent = `(Slide ${index + 1} of ${totalSlides} · ${blockName})`;
+      } else {
+        notesBody.innerHTML = '<p style="color: var(--text-faint);">No specific notes for this slide.</p>';
+      }
+
+      // Button States
+      prevBtn.style.opacity = index === 0 ? '0.3' : '1';
+      prevBtn.style.pointerEvents = index === 0 ? 'none' : 'auto';
+      nextBtn.style.opacity = index === totalSlides - 1 ? '0.3' : '1';
+      nextBtn.style.pointerEvents = index === totalSlides - 1 ? 'none' : 'auto';
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides - 1) {
+        updateSlide(currentSlide + 1);
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) {
+        updateSlide(currentSlide - 1);
+      }
+    }
+
+    // Speaker Notes Toggle
+    function toggleNotes() {
+      notesDrawer.classList.toggle('open');
+      notesToggleBtn.classList.toggle('active', notesDrawer.classList.contains('open'));
+    }
+
+    // Lightbox handlers
+    function openLightbox(src) {
+      lightboxImg.src = src;
+      lightboxModal.classList.add('active');
+    }
+
+    function closeLightbox() {
+      lightboxModal.classList.remove('active');
+    }
+
+    // Help Modal handlers
+    function toggleHelp() {
+      helpModal.classList.toggle('active');
+    }
+
+    function closeHelp(e) {
+      helpModal.classList.remove('active');
+    }
+
+    // Fullscreen Toggle
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+        fullscreenBtn.textContent = '✕';
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen().catch(() => {});
+          fullscreenBtn.textContent = '⛶';
+        }
+      }
+    }
+
+    // Keyboard Event Listener
+    window.addEventListener('keydown', (e) => {
+      // Ignore if typing in an input
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+      switch (e.key) {
+        case 'ArrowRight':
+        case ' ':
+        case 'PageDown':
+        case 'l':
+        case 'Enter':
+          e.preventDefault();
+          nextSlide();
+          break;
+        case 'ArrowLeft':
+        case 'PageUp':
+        case 'Backspace':
+        case 'h':
+          e.preventDefault();
+          prevSlide();
+          break;
+        case 'Home':
+          e.preventDefault();
+          updateSlide(0);
+          break;
+        case 'End':
+          e.preventDefault();
+          updateSlide(totalSlides - 1);
+          break;
+        case 'n':
+        case 'N':
+        case 's':
+        case 'S':
+          e.preventDefault();
+          toggleNotes();
+          break;
+        case 'f':
+        case 'F':
+          e.preventDefault();
+          toggleFullscreen();
+          break;
+        case '?':
+          e.preventDefault();
+          toggleHelp();
+          break;
+        case 'Escape':
+          if (lightboxModal.classList.contains('active')) {
+            closeLightbox();
+          } else if (helpModal.classList.contains('active')) {
+            toggleHelp();
+          } else if (notesDrawer.classList.contains('open')) {
+            toggleNotes();
+          }
+          break;
+      }
+    });
+
+    // Touch Swipe Support
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    window.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, false);
+
+    window.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, false);
+
+    function handleSwipe() {
+      const swipeDistance = touchEndX - touchStartX;
+      if (Math.abs(swipeDistance) > 50) {
+        if (swipeDistance < 0) {
+          nextSlide();
+        } else {
+          prevSlide();
+        }
+      }
+    }
+
+    // Button event bindings
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', nextSlide);
+    notesToggleBtn.addEventListener('click', toggleNotes);
+    notesCloseBtn.addEventListener('click', toggleNotes);
+    fullscreenBtn.addEventListener('click', toggleFullscreen);
+    helpBtn.addEventListener('click', toggleHelp);
+
+    // Initialize Deck
+    updateSlide(0);
+    startTimer();
+  </script>
+</body>
+</html>
