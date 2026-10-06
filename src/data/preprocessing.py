@@ -147,3 +147,29 @@ def compute_metrics(y_true: np.ndarray, y_pred: np.ndarray) -> Dict[str, float]:
         "rmse": rmse,
         "mbe": mbe,
     }
+
+def compute_anomaly_correlation(y_true: np.ndarray, y_pred: np.ndarray, y_clim: np.ndarray) -> Dict[str, float]:
+    """
+    Compute Anomaly Correlation Coefficient (ACC) relative to climatological normals.
+    
+    Metrics:
+      acc_wmo: Operational WMO uncentered anomaly correlation: dot(a, a_hat) / (||a|| * ||a_hat||)
+      acc_pearson: Centered Pearson correlation between observed and predicted anomalies.
+    """
+    t_anom = np.asarray(y_true).flatten() - np.asarray(y_clim).flatten()
+    p_anom = np.asarray(y_pred).flatten() - np.asarray(y_clim).flatten()
+
+    norm_t = np.linalg.norm(t_anom)
+    norm_p = np.linalg.norm(p_anom)
+    wmo_acc = float(np.dot(t_anom, p_anom) / (norm_t * norm_p)) if (norm_t > 1e-6 and norm_p > 1e-6) else 0.0
+
+    if np.std(t_anom) > 1e-6 and np.std(p_anom) > 1e-6:
+        pearson_acc = float(np.corrcoef(t_anom, p_anom)[0, 1])
+    else:
+        pearson_acc = 0.0
+
+    return {
+        "acc_wmo": wmo_acc,
+        "acc_pearson": pearson_acc,
+    }
+

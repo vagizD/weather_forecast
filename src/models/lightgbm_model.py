@@ -8,6 +8,7 @@ rolling statistics, and deterministic calendar features.
 import numpy as np
 import pandas as pd
 import lightgbm as lgb
+from sklearn.multioutput import MultiOutputRegressor
 from src.data.preprocessing import compute_historical_climatology
 
 class LightGBMWeatherForecaster:
