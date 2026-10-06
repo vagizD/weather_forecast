@@ -146,7 +146,7 @@
       transform: scale(0.96) translateY(12px);
       transition: opacity var(--transition-smooth), transform var(--transition-smooth), visibility var(--transition-smooth);
       pointer-events: none;
-      max-width: 1500px;
+      max-width: 1450px;
       margin: 0 auto;
     }
 
@@ -157,7 +157,7 @@
       pointer-events: auto;
     }
 
-    /* Typography & Micro-elements */
+    /* Typography & Badges */
     .tag-badge {
       display: inline-flex;
       align-items: center;
@@ -176,24 +176,13 @@
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
 
-    .tag-badge.emerald {
-      color: var(--emerald);
-      border-color: rgba(16, 185, 129, 0.3);
-    }
-
-    .tag-badge.purple {
-      color: var(--purple);
-      border-color: rgba(168, 85, 247, 0.3);
-    }
-
-    .tag-badge.amber {
-      color: var(--amber);
-      border-color: rgba(245, 158, 11, 0.3);
-    }
+    .tag-badge.emerald { color: var(--emerald); border-color: rgba(16, 185, 129, 0.3); }
+    .tag-badge.purple { color: var(--purple); border-color: rgba(168, 85, 247, 0.3); }
+    .tag-badge.amber { color: var(--amber); border-color: rgba(245, 158, 11, 0.3); }
 
     .slide-title {
       font-family: var(--font-display);
-      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+      font-size: clamp(2.2rem, 4.2vw, 3.8rem);
       font-weight: 800;
       line-height: 1.1;
       text-align: center;
@@ -205,37 +194,28 @@
     }
 
     .slide-subtitle {
-      font-size: clamp(1rem, 1.8vw, 1.35rem);
+      font-size: clamp(1rem, 1.6vw, 1.3rem);
       color: var(--text-muted);
       text-align: center;
-      max-width: 820px;
+      max-width: 860px;
       margin-bottom: 2.25rem;
       font-weight: 400;
       line-height: 1.5;
     }
 
-    /* Visual Components & Layouts */
+    /* Visual Components & Cards */
     .cards-row {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.5rem;
       width: 100%;
-      max-width: 1200px;
+      max-width: 1150px;
       margin-top: 0.5rem;
     }
 
-    .cards-3 {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    .cards-2 {
-      grid-template-columns: repeat(2, 1fr);
-      max-width: 950px;
-    }
-
-    .cards-4 {
-      grid-template-columns: repeat(4, 1fr);
-    }
+    .cards-3 { grid-template-columns: repeat(3, 1fr); }
+    .cards-2 { grid-template-columns: repeat(2, 1fr); max-width: 950px; }
+    .cards-4 { grid-template-columns: repeat(4, 1fr); }
 
     .card {
       background: var(--bg-card);
@@ -265,7 +245,7 @@
 
     .card-metric {
       font-family: var(--font-display);
-      font-size: clamp(2.2rem, 3.5vw, 3.2rem);
+      font-size: clamp(2rem, 3.2vw, 3rem);
       font-weight: 800;
       color: var(--cyan);
       margin-bottom: 0.25rem;
@@ -285,9 +265,43 @@
     }
 
     .card-sub {
-      font-size: 0.85rem;
+      font-size: 0.88rem;
       color: var(--text-muted);
-      line-height: 1.45;
+      line-height: 1.5;
+    }
+
+    .card-sub strong {
+      color: #f1f5f9;
+    }
+
+    /* Team Single Box */
+    .team-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-accent);
+      border-radius: 18px;
+      padding: 1.75rem 3.5rem;
+      backdrop-filter: blur(16px);
+      box-shadow: var(--glow-cyan);
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+
+    .team-names {
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 2.4vw, 2rem);
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.02em;
+      margin-bottom: 0.5rem;
+    }
+
+    .team-sub {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: var(--cyan);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 600;
     }
 
     /* Media and Image Display */
@@ -349,7 +363,7 @@
 
     th {
       background: rgba(255, 255, 255, 0.03);
-      padding: 1rem 1.25rem;
+      padding: 1.1rem 1.25rem;
       font-family: var(--font-mono);
       font-size: 0.75rem;
       text-transform: uppercase;
@@ -359,14 +373,12 @@
     }
 
     td {
-      padding: 1.05rem 1.25rem;
+      padding: 1.1rem 1.25rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.04);
       color: var(--text-muted);
     }
 
-    tr:last-child td {
-      border-bottom: none;
-    }
+    tr:last-child td { border-bottom: none; }
 
     tr.highlight-champion {
       background: rgba(0, 240, 255, 0.06);
@@ -395,18 +407,18 @@
       font-weight: 700;
     }
 
-    /* Formulas & Code blocks */
+    /* Formulas & Code boxes */
     .formula-box {
       background: rgba(0, 0, 0, 0.45);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 12px;
       padding: 1.25rem 2.25rem;
-      font-family: var(--font-mono);
-      font-size: clamp(1rem, 1.8vw, 1.35rem);
       color: var(--cyan);
       text-align: center;
       margin: 1rem 0;
       box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+      width: 100%;
+      max-width: 950px;
     }
 
     /* Floating Presenter HUD */
@@ -474,7 +486,7 @@
       letter-spacing: 0.05em;
       text-transform: uppercase;
       color: var(--cyan);
-      max-width: 200px;
+      max-width: 220px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -544,9 +556,7 @@
       border-radius: 4px;
     }
 
-    .notes-close-btn:hover {
-      color: #fff;
-    }
+    .notes-close-btn:hover { color: #fff; }
 
     .notes-body {
       padding: 1.5rem 2rem 2.5rem;
@@ -556,9 +566,7 @@
       color: #cbd5e1;
     }
 
-    .notes-section {
-      margin-bottom: 1.25rem;
-    }
+    .notes-section { margin-bottom: 1.25rem; }
 
     .notes-label {
       font-family: var(--font-mono);
@@ -570,7 +578,7 @@
       display: block;
     }
 
-    /* Lightbox modal for zooming figures */
+    /* Lightbox modal */
     .lightbox-modal {
       position: fixed;
       inset: 0;
@@ -601,7 +609,7 @@
       border: 1px solid var(--border);
     }
 
-    /* Keyboard shortcut hint modal */
+    /* Keyboard shortcut modal */
     .help-modal {
       position: fixed;
       inset: 0;
@@ -616,10 +624,7 @@
       transition: all var(--transition-fast);
     }
 
-    .help-modal.active {
-      opacity: 1;
-      visibility: visible;
-    }
+    .help-modal.active { opacity: 1; visibility: visible; }
 
     .help-card {
       background: #0f172a;
@@ -657,7 +662,6 @@
       color: var(--cyan);
     }
 
-    /* Responsive adjustments */
     @media (max-width: 1024px) {
       .slide { padding: 2rem 2.5rem 5rem; }
       .cards-4, .cards-3 { grid-template-columns: repeat(2, 1fr); }
@@ -685,213 +689,205 @@
   <main class="presentation-deck" id="deck">
 
     <!-- ==========================================
-         BLOCK 1: TITLE & AUTHORS
+         BLOCK 1: TITLE & AUTHORS (SLIDE 1)
          ========================================== -->
     <section class="slide active" data-block="01 · TITLE" data-index="1">
-      <div class="tag-badge">DUKE UNIVERSITY · PRATT SCHOOL OF ENGINEERING</div>
+      <div class="tag-badge">AIPI</div>
       <h1 class="slide-title">14-Day Hourly Weather Forecast</h1>
-      <p class="slide-subtitle">Continuous 336-Hour Temperature Trajectories at Raleigh-Durham Airport (KRDU)</p>
+      <p class="slide-subtitle">Continuous 336-Hour Temperature Trajectories at Raleigh-Durham Airport</p>
       
-      <div class="cards-row cards-3" style="max-width: 820px; margin-top: 1rem;">
-        <div class="card" style="text-align: center; align-items: center;">
-          <div class="card-heading" style="color: var(--cyan);">Vagiz Daudov</div>
-          <div class="card-sub">Duke University</div>
-        </div>
-        <div class="card" style="text-align: center; align-items: center;">
-          <div class="card-heading" style="color: var(--purple);">Arshaan Sayed</div>
-          <div class="card-sub">Duke University</div>
-        </div>
-        <div class="card" style="text-align: center; align-items: center;">
-          <div class="card-heading" style="color: var(--pink);">Mihir Kosuri</div>
-          <div class="card-sub">Duke University</div>
-        </div>
+      <div class="team-box">
+        <div class="team-names">Vagiz Daudov · Arshaan Sayed · Mihir Kosuri</div>
+        <div class="team-sub">AIPI</div>
       </div>
 
       <div class="speaker-note-content" hidden>
         <div class="notes-section">
           <span class="notes-label">🎯 Slide Objective</span>
-          <p>Introduce the team, course context, and the project challenge: forecasting continuous hourly temperatures for 14 full days (336 consecutive hours) at Raleigh-Durham International Airport.</p>
+          <p>Introduce the team and project challenge: predicting continuous hourly temperatures for 14 full days (336 consecutive hours) at Raleigh-Durham International Airport (KRDU).</p>
         </div>
         <div class="notes-section">
           <span class="notes-label">🗣️ Speaker Talking Points</span>
-          <p>"Good afternoon everyone. We are Team 2: Vagiz, Arshaan, and Mihir. Today we present our work on 14-day continuous hourly weather forecasting at Raleigh-Durham Airport. Unlike typical weather apps that forecast 1 to 3 days ahead, we tackle a long-horizon 336-hour continuous trajectory using strictly historical sensor and atmospheric reanalysis data."</p>
+          <p>"Hello everyone. We are Vagiz, Arshaan, and Mihir from AIPI. Today we present our work on 14-day continuous hourly weather forecasting at Raleigh-Durham Airport. Unlike typical consumer apps that give single-day or 3-day summaries, we model a complete 336-hour continuous trajectory across a two-week horizon."</p>
         </div>
       </div>
     </section>
 
     <!-- ==========================================
-         BLOCK 2: PROBLEM STATEMENT
+         BLOCK 2: PROBLEM STATEMENT (SLIDE 2)
          ========================================== -->
     <section class="slide" data-block="02 · PROBLEM STATEMENT" data-index="2">
       <div class="tag-badge amber">PROBLEM STATEMENT</div>
       <h2 class="slide-title">The 336-Hour Horizon</h2>
-      <p class="slide-subtitle">Predict continuous hourly surface temperatures for 14 consecutive days without future lookahead</p>
+      <p class="slide-subtitle">Predict continuous hourly surface temperatures for 14 consecutive days</p>
       
       <div class="cards-row cards-3">
         <div class="card">
           <div class="card-icon">⏱️</div>
           <div class="card-metric">336 h</div>
-          <div class="card-heading">14 Full Days Ahead</div>
-          <div class="card-sub">Predicting $T_{t+1}, \dots, T_{t+336}$ simultaneously.</div>
+          <div class="card-heading">14 Full Days</div>
+          <div class="card-sub">Predicting full trajectory: $T_{t+1}, \dots, T_{t+336}$.</div>
         </div>
         <div class="card">
           <div class="card-icon">📍</div>
           <div class="card-metric purple">KRDU</div>
           <div class="card-heading">Raleigh-Durham Airport</div>
-          <div class="card-sub">Direct NOAA/NWS sensor observations (WBAN: 13722).</div>
+          <div class="card-sub">NOAA Automated Surface Observing Station (WBAN: 13722).</div>
         </div>
         <div class="card">
-          <div class="card-icon">🔒</div>
-          <div class="card-metric emerald">Zero</div>
-          <div class="card-heading">Lookahead Leakage</div>
-          <div class="card-sub">Strict cutoff: Only sensor history up to midnight is used.</div>
+          <div class="card-icon">🌡️</div>
+          <div class="card-metric emerald">2m Temp</div>
+          <div class="card-heading">Surface Temperature</div>
+          <div class="card-sub">Ground-level temperature trajectory in degrees Fahrenheit (°F).</div>
         </div>
       </div>
 
       <div class="speaker-note-content" hidden>
         <div class="notes-section">
           <span class="notes-label">🎯 Slide Objective</span>
-          <p>Frame the concrete scope and difficulty of the 336-hour operational forecasting challenge.</p>
+          <p>Define the concrete problem statement: predicting continuous hourly temperatures for 14 days at KRDU airport.</p>
         </div>
         <div class="notes-section">
           <span class="notes-label">🗣️ Speaker Talking Points</span>
-          <p>"Here is the exact task: starting from midnight on any forecast date, our models must predict all 336 consecutive hourly temperatures for the next two weeks. We do NOT use future numerical weather predictions from NOAA or GFS. We rely entirely on antecedent local sensor measurements, atmospheric dynamics, and deterministic celestial physics."</p>
+          <p>"Here is the exact problem statement: starting from any forecast launch time, our model must predict all 336 consecutive hourly surface temperatures for the next two weeks. This is a full continuous curve—capturing daily highs, nightly lows, and thermal transitions over 14 days."</p>
         </div>
       </div>
     </section>
 
     <!-- ==========================================
-         BLOCK 3: DATA & PHYSICS (SLIDE 3)
+         BLOCK 3: DATA SOURCING (SLIDE 3)
          ========================================== -->
-    <section class="slide" data-block="03 · DATA & PHYSICS" data-index="3">
+    <section class="slide" data-block="03 · DATA & METEOROLOGY" data-index="3">
       <div class="tag-badge">DATA SOURCING</div>
-      <h2 class="slide-title">Dual Atmospheric Stream</h2>
-      <p class="slide-subtitle">26 continuous years (2000–2026) of hourly observations: 234,144 timesteps</p>
+      <h2 class="slide-title">26 Years of Sensor Observations</h2>
+      <p class="slide-subtitle">234,144 continuous hourly steps (2000–2026)</p>
       
       <div class="cards-row cards-2">
         <div class="card">
           <div class="card-icon">📡</div>
           <div class="card-metric">ASOS</div>
           <div class="card-heading">NOAA Ground-Truth Sensors</div>
-          <div class="card-sub">Direct 2m temperature (`target_tmpf`), dew point, barometric surface pressure, wind vectors, and cloud cover at KRDU.</div>
+          <div class="card-sub">Direct station sensors at KRDU: 2m temperature (`target_tmpf`), dew point, barometric pressure, wind vectors, and clouds.</div>
         </div>
         <div class="card">
           <div class="card-icon">🌍</div>
           <div class="card-metric purple">ERA5-Land</div>
           <div class="card-heading">Atmospheric Reanalysis</div>
-          <div class="card-sub">High-resolution boundary layer thermodynamics via Open-Meteo API: vapor pressure deficit (VPD), specific humidity, solar radiation.</div>
+          <div class="card-sub">High-resolution boundary layer thermodynamics via Open-Meteo: vapor pressure deficit (VPD), specific humidity, solar radiation.</div>
         </div>
       </div>
 
       <div class="speaker-note-content" hidden>
         <div class="notes-section">
           <span class="notes-label">🎯 Slide Objective</span>
-          <p>Highlight the scale, temporal continuity, and complementary data streams.</p>
+          <p>Explain the scale and quality of the historical sensor dataset.</p>
         </div>
         <div class="notes-section">
           <span class="notes-label">🗣️ Speaker Talking Points</span>
-          <p>"To build high-capacity models, we collected 26 continuous years of hourly weather data from 2000 through late 2026—over 234,000 hourly steps. We merge two high-fidelity streams: NOAA's Automated Surface Observing System (ASOS) station at KRDU for ground truth, and ERA5-Land reanalysis for boundary-layer thermodynamic variables like vapor pressure deficit and humidity."</p>
+          <p>"To build reliable models, we sourced 26 continuous years of hourly data from 2000 to 2026—over 234,000 steps. We combine NOAA ASOS station sensors at KRDU for physical ground truth with ERA5-Land reanalysis for atmospheric thermodynamic quantities like humidity and vapor pressure deficit."</p>
         </div>
       </div>
     </section>
 
     <!-- ==========================================
-         BLOCK 3: DATA & PHYSICS (SLIDE 4)
+         BLOCK 3: SOLAR PHYSICS & WHY IT MATTERS (SLIDE 4)
          ========================================== -->
-    <section class="slide" data-block="03 · DATA & PHYSICS" data-index="4">
-      <div class="tag-badge purple">CELESTIAL MECHANICS</div>
-      <h2 class="slide-title">Deterministic Solar Physics</h2>
-      <p class="slide-subtitle">NOAA solar position equations provide exact future extraterrestrial boundary conditions</p>
+    <section class="slide" data-block="03 · DATA & METEOROLOGY" data-index="4">
+      <div class="tag-badge purple">SOLAR PHYSICS</div>
+      <h2 class="slide-title">Solar Radiation Drives Weather</h2>
+      <p class="slide-subtitle">Deterministic celestial geometry provides the fundamental diurnal energy budget</p>
       
       <div class="formula-box">
-        $$\text{Solar Zenith Angle } (\theta_z) \quad\longrightarrow\quad I_{\text{ext}} = I_{\text{sc}} \cdot E_0 \cdot \cos(\theta_z)^+$$
+        $$\text{Incoming Solar Flux } (I_{\text{ext}}) \propto \cos(\text{Solar Zenith Angle})^+, \quad \text{Known for all } 336\text{h}$$
       </div>
 
       <div class="cards-row cards-2">
         <div class="card">
-          <div class="card-heading">☀️ Solar Zenith & Elevation</div>
-          <div class="card-sub">Exact geometric angles computed deterministically across past and future 336h horizons without forecast uncertainty.</div>
+          <div class="card-icon">☀️</div>
+          <div class="card-heading">Deterministic Orbital Clock</div>
+          <div class="card-sub">Solar angles are calculated deterministically across the entire 14-day future window via NOAA astronomical equations without forecast error.</div>
         </div>
         <div class="card">
-          <div class="card-heading">⚡ Extraterrestrial Solar Flux</div>
-          <div class="card-sub">Calculates incoming top-of-atmosphere radiative flux ($W/m^2$), driving the fundamental diurnal heating cycle.</div>
+          <div class="card-icon">⚡</div>
+          <div class="card-heading">Why It Matters</div>
+          <div class="card-sub">Solar flux dictates daily peak and trough bounds. Without it, long-horizon models have no physical energy anchor and drift out of phase.</div>
         </div>
       </div>
 
       <div class="speaker-note-content" hidden>
         <div class="notes-section">
           <span class="notes-label">🎯 Slide Objective</span>
-          <p>Explain how astronomical domain knowledge gives models a reliable, leakage-free future signal.</p>
+          <p>Explain the physics of solar irradiance and why it is critical for long-horizon weather forecasting.</p>
         </div>
         <div class="notes-section">
           <span class="notes-label">🗣️ Speaker Talking Points</span>
-          <p>"While weather chaotic dynamics are hard to predict, orbital mechanics are entirely deterministic. Using NOAA's astronomical equations, we compute the exact Solar Zenith Angle and extraterrestrial solar irradiance for every hour of the 14-day future window. This gives our models an unambiguous diurnal clock into the future."</p>
+          <p>"While weather itself is chaotic, celestial geometry is completely deterministic. Using NOAA astronomical equations, we compute the exact Solar Zenith Angle and incoming solar flux for every future hour. Why does this matter? Solar radiation is the primary energy driver of the diurnal cycle. It anchors the daily timing of thermal peaks and troughs, ensuring our models don't drift out of phase 14 days out."</p>
         </div>
       </div>
     </section>
 
     <!-- ==========================================
-         BLOCK 3: DATA & PHYSICS (SLIDE 5)
+         BLOCK 3: THE CHALLENGE & MSE TRAP (SLIDE 5)
          ========================================== -->
-    <section class="slide" data-block="03 · DATA & PHYSICS" data-index="5">
+    <section class="slide" data-block="03 · THE CHALLENGE" data-index="5">
       <div class="tag-badge amber">THE CHALLENGE</div>
-      <h2 class="slide-title">Why Weather Forecasting Is Hard</h2>
-      <p class="slide-subtitle">Two structural failure modes in long-horizon neural forecasting</p>
+      <h2 class="slide-title">Why 14-Day Forecasting Fails</h2>
+      <p class="slide-subtitle">Autoregressive compounding and the mathematical danger of MSE loss</p>
       
       <div class="cards-row cards-2">
         <div class="card" style="border-color: rgba(239, 68, 68, 0.3);">
           <div class="card-icon">🌪️</div>
           <div class="card-heading" style="color: var(--red);">1. Autoregressive Compounding</div>
-          <div class="card-sub">Step-by-step rolling prediction ($t \to t+1 \to t+2$) compounds error exponentially. By Day 3–4, trajectories diverge completely into unphysical chaos.</div>
+          <div class="card-sub">Step-by-step prediction ($t \to t+1 \to t+2$) compounds errors exponentially. By Day 3–4, trajectories diverge into unphysical chaos.</div>
         </div>
         <div class="card" style="border-color: rgba(245, 158, 11, 0.3);">
           <div class="card-icon">📉</div>
-          <div class="card-heading" style="color: var(--amber);">2. Conditional Mean Flattening</div>
-          <div class="card-sub">Standard MSE loss encourages models to hedge bets under uncertainty by predicting the conditional mean. The mean of an uncertain sine wave is a flat line $\to$ diurnal collapse!</div>
+          <div class="card-heading" style="color: var(--amber);">2. The MSE Trap (Diurnal Collapse)</div>
+          <div class="card-sub">MSE heavily penalizes variance. Under uncertainty, it forces models to predict the conditional mean $\to$ flat line! Even for residuals, MSE flattens the wave to zero!</div>
         </div>
       </div>
 
       <div class="speaker-note-content" hidden>
         <div class="notes-section">
           <span class="notes-label">🎯 Slide Objective</span>
-          <p>Diagnose the two major failure modes of standard time-series models on multi-week weather.</p>
+          <p>Explain the two structural failure modes: autoregressive compounding and conditional mean flattening under MSE loss.</p>
         </div>
         <div class="notes-section">
           <span class="notes-label">🗣️ Speaker Talking Points</span>
-          <p>"Why can't you just throw an LSTM or standard autoregressive transformer at this? First, autoregressive compounding: errors at hour 24 feed into hour 25, creating exponential divergence by day 4. Second, diurnal collapse: because multi-week weather has inherent uncertainty, minimizing squared error forces the model to predict the average of all possible sine waves. That average is a flat line—the daily 20-degree diurnal temperature cycle completely collapses."</p>
+          <p>"Why is 14-day weather forecasting so notoriously difficult? First, autoregression fails: predicting hour-by-hour compounds errors exponentially by day 3. Second, the MSE trap: Mean Squared Error heavily penalizes any phase or amplitude mismatch. Under multi-week uncertainty, minimizing MSE mathematically forces the model to hedge its bets by predicting the conditional mean. The mean of an oscillating sine wave is a flat line—the daily 20-degree diurnal temperature cycle collapses into a flatline! Even if predicting residuals, MSE flattens the residual to zero."</p>
         </div>
       </div>
     </section>
 
     <!-- ==========================================
-         BLOCK 3: DATA & PHYSICS (SLIDE 6)
+         BLOCK 3: PHYSICAL ASSUMPTIONS (SLIDE 6)
          ========================================== -->
-    <section class="slide" data-block="03 · DATA & PHYSICS" data-index="6">
+    <section class="slide" data-block="03 · PHYSICAL ASSUMPTIONS" data-index="6">
       <div class="tag-badge emerald">PHYSICAL ASSUMPTIONS</div>
       <h2 class="slide-title">Core Physical Assumptions</h2>
-      <p class="slide-subtitle">Deriving architectural inductive biases from atmospheric thermodynamics</p>
+      <p class="slide-subtitle">Deriving modeling inductive biases from atmospheric thermodynamics</p>
       
       <div class="cards-row cards-2">
         <div class="card">
           <div class="card-metric emerald">01</div>
           <div class="card-heading">Diurnal Invariance</div>
-          <div class="card-sub">Solar radiation forces a daily 24-hour cycle. The day/night temperature oscillation does not vanish even when long-range synoptic predictability decays.</div>
+          <div class="card-sub">The sun rises and sets regardless of weather chaos. The 24-hour temperature oscillation must be preserved even at Day 14.</div>
         </div>
         <div class="card">
           <div class="card-metric emerald">02</div>
           <div class="card-heading">Climatological Reversion</div>
-          <div class="card-sub">Beyond the 7-day deterministic limit, atmospheric memory decays, and local temperature anomalies must revert smoothly toward historical climatology.</div>
+          <div class="card-sub">Beyond the synoptic predictability horizon (~7 days), atmospheric anomalies must smoothly revert to 26-year historical climatology.</div>
         </div>
       </div>
 
       <div class="speaker-note-content" hidden>
         <div class="notes-section">
           <span class="notes-label">🎯 Slide Objective</span>
-          <p>Explain the two key physical assumptions that motivate our residual decomposition architecture.</p>
+          <p>Present the two core physical assumptions that govern our architecture.</p>
         </div>
         <div class="notes-section">
           <span class="notes-label">🗣️ Speaker Talking Points</span>
-          <p>"To solve these failure modes, we establish two core physical assumptions: First, Diurnal Invariance—the sun rises and sets regardless of chaotic squalls, so our architecture must explicitly preserve daily 24-hour oscillations. Second, Climatological Reversion—after 7 to 10 days, synoptic memory is lost, and the most physically optimal forecast is the 26-year historical climatological curve rather than a flat average."</p>
+          <p>"To prevent these failure modes, we build on two fundamental physical assumptions: First, Diurnal Invariance—the daily heating cycle is persistent and must never collapse. Second, Climatological Reversion—after atmospheric memory fades around Day 7, the most physically grounded forecast is the 26-year historical climatological curve."</p>
         </div>
       </div>
     </section>
@@ -901,69 +897,65 @@
          ========================================== -->
     <section class="slide" data-block="04 · OBJECTIVE & FORMULATION" data-index="7">
       <div class="tag-badge">OPTIMIZATION OBJECTIVE</div>
-      <h2 class="slide-title">Residual Climatology Formulation</h2>
-      <p class="slide-subtitle">Predicting atmospheric residual anomalies over historical climatology</p>
+      <h2 class="slide-title">Residual Formulation with L1 Loss</h2>
+      <p class="slide-subtitle">Decomposing predictions into climatology + neural residual anomalies using MAE</p>
       
       <div class="formula-box">
-        $$\hat{y}(t) = \hat{y}_{\text{clim}}(t) + \hat{r}_\theta(t)$$
+        $$\hat{y}(t) = \hat{y}_{\text{clim}}(t) + \hat{r}_\theta(t), \qquad \min_\theta \frac{1}{336}\sum_{h=1}^{336} |\hat{y}_{t+h} - y_{t+h}|$$
       </div>
 
       <div class="cards-row cards-2">
         <div class="card">
           <div class="card-heading">1. Climatological Prior $\hat{y}_{\text{clim}}(t)$</div>
-          <div class="card-sub">Zero-parameter empirical 26-year mean for every (Day of Year, Hour) tuple. Anchors the baseline seasonal and diurnal cycles.</div>
+          <div class="card-sub">Zero-parameter empirical 26-year average for each (Day of Year, Hour). Guarantees realistic diurnal amplitude.</div>
         </div>
         <div class="card">
-          <div class="card-heading">2. Neural Residual $\hat{r}_\theta(t)$</div>
-          <div class="card-sub">Deep neural networks predict the synoptic departure/anomaly. Reverts naturally to zero beyond predictability limits.</div>
+          <div class="card-heading">2. Why L1 (MAE) Over L2 (MSE)</div>
+          <div class="card-sub">L1 loss tracks median trajectory without over-penalizing phase variance. Prevents the residual from collapsing to zero!</div>
         </div>
       </div>
 
       <div class="speaker-note-content" hidden>
         <div class="notes-section">
           <span class="notes-label">🎯 Slide Objective</span>
-          <p>Show how mathematical formulation eliminates diurnal collapse.</p>
+          <p>Explain the residual decomposition formulation and why L1/MAE loss is mathematically superior to MSE.</p>
         </div>
         <div class="notes-section">
           <span class="notes-label">🗣️ Speaker Talking Points</span>
-          <p>"Instead of asking the neural network to learn both raw temperatures and seasonal cycles from scratch, we decompose the target: temperature equals 26-year historical climatology plus a neural residual anomaly. If the network becomes uncertain on Day 12, the residual decays to zero, and the forecast gracefully reverts to the diurnal climatological wave instead of collapsing into a flat line."</p>
+          <p>"Our objective decomposes temperature into historical climatology plus a learned residual anomaly, trained using L1 Mean Absolute Error rather than MSE. Why L1? Because L1 optimizes the conditional median rather than the conditional mean. It provides constant gradient magnitude regardless of error size, preventing the network from hedging and flattening its residual oscillations to zero."</p>
         </div>
       </div>
     </section>
 
     <!-- ==========================================
-         BLOCK 4: OBJECTIVE & FORMULATION (SLIDE 8)
+         BLOCK 4: METRICS (SLIDE 8)
          ========================================== -->
-    <section class="slide" data-block="04 · OBJECTIVE & FORMULATION" data-index="8">
+    <section class="slide" data-block="04 · EVALUATION METRICS" data-index="8">
       <div class="tag-badge purple">EVALUATION METRICS</div>
-      <h2 class="slide-title">Loss & Reporting Metrics</h2>
-      <p class="slide-subtitle">Multi-horizon loss optimized across all 336 future hours simultaneously</p>
+      <h2 class="slide-title">How We Measure Success</h2>
+      <p class="slide-subtitle">Continuous evaluation across all 336 future hours simultaneously</p>
       
-      <div class="formula-box">
-        $$\mathcal{L}_{\text{MAE}} = \frac{1}{336}\sum_{h=1}^{336} |\hat{y}_{t+h} - y_{t+h}|$$
-      </div>
-
       <div class="cards-row cards-2">
         <div class="card">
           <div class="card-metric">MAE</div>
           <div class="card-heading">Mean Absolute Error (°F)</div>
-          <div class="card-sub">Primary benchmark metric. Measures average forecast deviation across all 336 hours in degrees Fahrenheit.</div>
+          <div class="card-sub"><b>Primary Metric.</b> Directly measures expected temperature error in degrees Fahrenheit across the full 14-day horizon.</div>
         </div>
         <div class="card">
           <div class="card-metric purple">RMSE</div>
           <div class="card-heading">Root Mean Squared Error (°F)</div>
-          <div class="card-sub">Secondary metric. Heavily penalizes large synoptic busts, rapid front mispredictions, and extreme errors.</div>
+          <div class="card-sub"><b>Secondary Metric.</b> Penalizes tail risk, large thermal busts, and timing errors on severe cold front passages.</div>
         </div>
       </div>
 
       <div class="speaker-note-content" hidden>
         <div class="notes-section">
           <span class="notes-label">🎯 Slide Objective</span>
-          <p>Clarify our primary and secondary metrics.</p>
+          <p>Clarify reporting metrics: MAE as primary operational measure, RMSE for tail risk.</p>
         </div>
         <div class="notes-section">
           <span class="notes-label">🗣️ Speaker Talking Points</span>
-          <p>"Our primary metric is Mean Absolute Error (MAE) in degrees Fahrenheit across the full 336-hour window. We also report Root Mean Squared Error (RMSE), which penalizes large misses such as mispredicting the timing of a severe cold front. All models directly optimize multi-horizon error in a single joint forward pass."</p>
+          <p>"We report two metrics: Mean Absolute Error (MAE) in degrees Fahrenheit across all 336 hours as our primary benchmark, and Root Mean Squared Error (RMSE) to capture tail risk and severe frontal mispredictions."</p>
         </div>
       </div>
     </section>
@@ -973,40 +965,40 @@
          ========================================== -->
     <section class="slide" data-block="05 · EXPERIMENTAL SETUP" data-index="9">
       <div class="tag-badge emerald">EXPERIMENTAL SETUP</div>
-      <h2 class="slide-title">Zero-Leakage Temporal Split</h2>
-      <p class="slide-subtitle">Strict temporal isolation across 26 years; rolling multi-window evaluation</p>
+      <h2 class="slide-title">Chronological Split & Rolling Windows</h2>
+      <p class="slide-subtitle">Strict chronological partitioning across 26 years; rolling multi-window evaluation</p>
       
       <div class="cards-row cards-4">
         <div class="card">
           <div class="card-metric" style="font-size: 2rem;">Train</div>
           <div class="card-heading">2000 – Apr 2026</div>
-          <div class="card-sub">230,088 continuous hours. All scalers and quantiles fit strictly here.</div>
+          <div class="card-sub">230,088 continuous hours. Scalers fit strictly here.</div>
         </div>
         <div class="card">
           <div class="card-metric purple" style="font-size: 2rem;">Val</div>
           <div class="card-heading">Apr – Jun 2026</div>
-          <div class="card-sub">78 rolling 14-day windows (daily 24h stride). Spring season.</div>
+          <div class="card-sub">78 rolling 14-day windows (daily 24h stride). Spring.</div>
         </div>
         <div class="card">
           <div class="card-metric amber" style="font-size: 2rem;">Test</div>
           <div class="card-heading">Jul – Sep 16, 2026</div>
-          <div class="card-sub">65 rolling 14-day windows (daily 24h stride). Summer season.</div>
+          <div class="card-sub">65 rolling 14-day windows (daily 24h stride). Summer.</div>
         </div>
         <div class="card">
           <div class="card-metric emerald" style="font-size: 2rem;">Locked</div>
           <div class="card-heading">Sep 17 – 30, 2026</div>
-          <div class="card-sub">Official SuperTest window (336 hours preserved untouched).</div>
+          <div class="card-sub">SuperTest holdout window (336 hours untouched).</div>
         </div>
       </div>
 
       <div class="speaker-note-content" hidden>
         <div class="notes-section">
           <span class="notes-label">🎯 Slide Objective</span>
-          <p>Detail the temporal split and rolling window evaluation protocol.</p>
+          <p>Explain the temporal split and rolling evaluation protocol across 26 years.</p>
         </div>
         <div class="notes-section">
           <span class="notes-label">🗣️ Speaker Talking Points</span>
-          <p>"To prevent data leakage, we enforce strict chronological splits: 26 years of training data through April 1, 2026. Rather than testing on just one window, we evaluate across rolling 14-day windows with a daily stride—78 validation windows in Spring and 65 holdout test windows in Summer. Finally, we hold out September 17 to 30 as a locked SuperTest window that was never touched during development."</p>
+          <p>"To avoid single-window evaluation bias, we test models across rolling 14-day windows with a daily stride: 78 rolling windows in Spring validation, 65 rolling windows in Summer test, and an official locked SuperTest window for late September 2026."</p>
         </div>
       </div>
     </section>
@@ -1016,14 +1008,14 @@
          ========================================== -->
     <section class="slide" data-block="06 · APPROACH 1: CLASSICAL" data-index="10">
       <div class="tag-badge">APPROACH 1: CLASSICAL ML</div>
-      <h2 class="slide-title">Ridge Regression & LightGBM</h2>
-      <p class="slide-subtitle">Direct multi-output projection and gradient-boosted decision trees</p>
+      <h2 class="slide-title">Multi-Output Ridge & LightGBM</h2>
+      <p class="slide-subtitle">How classical models predict all 336 future hours simultaneously</p>
       
       <div class="cards-row cards-2">
         <div class="card">
           <div class="card-icon">📈</div>
-          <div class="card-heading" style="color: var(--cyan);">Linear Ridge ($\alpha = 50.0$)</div>
-          <div class="card-sub">Closed-form L2 projection mapping 168-hour antecedent state (current temperature, pressure tendencies, wind vectors, rolling momentum) directly to 336 future residual anomalies simultaneously.</div>
+          <div class="card-heading" style="color: var(--cyan);">Multi-Output Ridge Matrix ($\mathbf{W} \in \mathbb{R}^{336 \times D}$)</div>
+          <div class="card-sub">Standard Scikit-Learn Ridge predicts a single scalar. We formulate a <b>multi-output projection matrix $\mathbf{W}$</b> mapping the antecedent cutoff state directly to all 336 future residuals in closed form!</div>
         </div>
         <div class="card">
           <div class="card-icon">🌲</div>
@@ -1035,79 +1027,60 @@
       <div class="speaker-note-content" hidden>
         <div class="notes-section">
           <span class="notes-label">🎯 Slide Objective</span>
-          <p>Present the classical ML baselines and their operational formulations.</p>
+          <p>Explain how Ridge is formulated for 336 hours (multi-output projection matrix) and introduce LightGBM.</p>
         </div>
         <div class="notes-section">
           <span class="notes-label">🗣️ Speaker Talking Points</span>
-          <p>"For our classical benchmarks, we implemented two models: First, multi-output Ridge Regression with L2 regularization ($\alpha=50$), projecting a 168-hour antecedent history vector directly to all 336 future residuals. Second, LightGBM with 150 gradient-boosted trees over engineered lag features, rolling statistics, and solar angles. Both models provide strong benchmarks by exploiting atmospheric persistence at the forecast cutoff."</p>
+          <p>"How do classical models predict a 336-hour curve? By default, scikit-learn models predict a single number. Instead of running 336 separate models or autoregressive loops, we formulated Multi-Output Ridge Regression: a closed-form weight matrix $\mathbf{W}$ of shape 336 by $D$. One matrix multiplication projects the 168-hour history state directly into all 336 future residuals simultaneously. For LightGBM, we trained 150 gradient-boosted trees over rolling lag statistics and solar angles."</p>
         </div>
       </div>
     </section>
 
     <!-- ==========================================
-         BLOCK 7: APPROACH 2 — DL (SLIDE 11)
+         BLOCK 7: APPROACH 2 — DL (SLIDE 11, COMBINED & INTUITIVE)
          ========================================== -->
     <section class="slide" data-block="07 · APPROACH 2: DEEP LEARNING" data-index="11">
       <div class="tag-badge purple">APPROACH 2: DEEP LEARNING</div>
-      <h2 class="slide-title">PatchTST Backbone</h2>
-      <p class="slide-subtitle">Channel-independent transformer with 24-hour diurnal patching</p>
-      
-      <div class="image-container" onclick="openLightbox('report/patchtst_architecture_diagram.png')">
-        <img src="report/patchtst_architecture_diagram.png" alt="PatchTST Architecture Diagram">
-      </div>
-      <div class="image-caption">🔍 Click to enlarge · Channel Independence + 24h Diurnal Patching + Multi-Horizon Head</div>
-
-      <div class="speaker-note-content" hidden>
-        <div class="notes-section">
-          <span class="notes-label">🎯 Slide Objective</span>
-          <p>Walk through the core architectural pillars of PatchTST.</p>
-        </div>
-        <div class="notes-section">
-          <span class="notes-label">🗣️ Speaker Talking Points</span>
-          <p>"Our primary deep learning architecture is PatchTST, shown here in the diagram. It has three key innovations: First, Channel Independence—multivariate physical channels like temperature, pressure, and wind are split and processed independently, preventing noisy wind gusts from corrupting thermal features. Second, 24-hour Diurnal Patching—each patch represents one full day, so self-attention operates across synoptic weather transitions rather than hourly micro-steps. Third, a direct multi-horizon head projecting all 336 future hours simultaneously."</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==========================================
-         BLOCK 7: APPROACH 2 — DL (SLIDE 12)
-         ========================================== -->
-    <section class="slide" data-block="07 · APPROACH 2: DEEP LEARNING" data-index="12">
-      <div class="tag-badge purple">APPROACH 2: DEEP LEARNING</div>
-      <h2 class="slide-title">DenseCrossTransformer (DCT)</h2>
-      <p class="slide-subtitle">Piecewise Linear Encoding & The Dense Gradient Highway</p>
+      <h2 class="slide-title">Deep Learning: Core Intuition</h2>
+      <p class="slide-subtitle">Two architectures designed to overcome weather forecasting challenges</p>
       
       <div class="cards-row cards-2">
         <div class="card">
-          <div class="card-icon">📐</div>
-          <div class="card-heading" style="color: var(--cyan);">64-Bin PLE Encoding</div>
-          <div class="card-sub">Piecewise Linear Encoding over 64 empirical training quantiles. Converts continuous temperature into smooth continuous-piece linear activations.</div>
+          <div class="card-icon">🧩</div>
+          <div class="card-heading" style="color: var(--cyan);">PatchTST: Day-by-Day Matching</div>
+          <div class="card-sub">
+            • <b>Daily Patches:</b> Groups 24 hours into a single 'token'. Compares day-to-day weather patterns instead of noisy hourly steps.<br>
+            • <b>Independent Channels:</b> Processes temperature, wind, and pressure separately so wind gusts don't corrupt thermal trends.
+          </div>
         </div>
         <div class="card">
           <div class="card-icon">⚡</div>
-          <div class="card-heading" style="color: var(--purple);">The Dense Gradient Highway</div>
-          <div class="card-sub">Calendar embeddings (Month, Hour, Year) concatenated at <b>every intermediate layer</b>. Direct uninterrupted gradients eliminate attention dispersion.</div>
+          <div class="card-heading" style="color: var(--purple);">DenseNet: The Calendar Highway</div>
+          <div class="card-sub">
+            • <b>Direct Calendar Injection:</b> Feeds month, hour, and year embeddings directly into <b>every layer</b>.<br>
+            • <b>No Forgotten Context:</b> Prevents deep layers from losing temporal context, forcing embeddings to encode true seasonal warming.
+          </div>
         </div>
       </div>
 
       <div class="speaker-note-content" hidden>
         <div class="notes-section">
           <span class="notes-label">🎯 Slide Objective</span>
-          <p>Introduce the DenseCrossTransformer architecture and explain its unique strengths.</p>
+          <p>Explain the intuitive mechanisms of PatchTST and DenseNet without confusing deep learning jargon.</p>
         </div>
         <div class="notes-section">
           <span class="notes-label">🗣️ Speaker Talking Points</span>
-          <p>"We also developed DenseCrossTransformer. Instead of tokenizing continuous features linearly, it uses Piecewise Linear Encoding (PLE) across 64 empirical quantiles. More importantly, it employs a 'Dense Highway': calendar embeddings are injected into every single layer. This creates direct gradient pathways that prevent vanishing gradients and allow the network to learn rich calendar representations across 26 years."</p>
+          <p>"For deep learning, we avoided black-box complexity and focused on two intuitive architectures: PatchTST slices the time series into 24-hour daily patches. Instead of getting lost in hourly noise, it matches day-to-day synoptic weather systems, keeping physical variables independent. DenseNet introduces a 'Calendar Highway': it injects month and hour embeddings into every single layer, ensuring the network never loses track of seasonal and decadal climate shifts."</p>
         </div>
       </div>
     </section>
 
     <!-- ==========================================
-         BLOCK 8: RESULTS TABLE (SLIDE 13)
+         BLOCK 8: RESULTS TABLE (SLIDE 12)
          ========================================== -->
-    <section class="slide" data-block="08 · BENCHMARK RESULTS" data-index="13">
+    <section class="slide" data-block="08 · BENCHMARK RESULTS" data-index="12">
       <div class="tag-badge emerald">BENCHMARK RESULTS</div>
-      <h2 class="slide-title">Master Evaluation Benchmark</h2>
+      <h2 class="slide-title">Model Evaluation Benchmark</h2>
       <p class="slide-subtitle">Single row per model, ordered: Climatology, Ridge, LightGBM, PatchTST, DCT</p>
       
       <div class="table-wrapper">
@@ -1167,20 +1140,20 @@
       <div class="speaker-note-content" hidden>
         <div class="notes-section">
           <span class="notes-label">🎯 Slide Objective</span>
-          <p>Present the unified master results table in the requested order and highlight the key empirical findings.</p>
+          <p>Present the master evaluation table in the exact requested order and highlight the key results.</p>
         </div>
         <div class="notes-section">
           <span class="notes-label">🗣️ Speaker Talking Points</span>
-          <p>"Here is our master evaluation table, presented in the requested sequence. Looking at the holdout test set across 65 summer windows: PatchTST establishes state-of-the-art performance at 3.87°F MAE, outperforming classical models and breaking the 4.0°F barrier. On the locked SuperTest, Ridge and LightGBM performed exceptionally well around 5.86°F because they exploited the warm initial conditions of an unseasonal heat wave, while retraining on Spring and Summer data improved deep learning models significantly."</p>
+          <p>"Here is our final evaluation table in the requested order: Across the 65 rolling summer test windows, PatchTST is our champion, setting state-of-the-art accuracy at 3.87°F MAE and breaking the 4.0°F barrier. On the locked SuperTest, Ridge and LightGBM performed exceptionally around 5.86°F because they effectively carried forward initial warmth during an unseasonal heat wave, while retraining on spring/summer data improved deep learning models significantly."</p>
         </div>
       </div>
     </section>
 
     <!-- ==========================================
-         BLOCK 9: ERROR ANALYSIS — PART 1 (SLIDE 14)
+         BLOCK 9: ERROR DYNAMICS — PART 1 (SLIDE 13)
          ========================================== -->
-    <section class="slide" data-block="09 · ERROR DYNAMICS" data-index="14">
-      <div class="tag-badge amber">SYNOPTIC METEOROLOGY</div>
+    <section class="slide" data-block="09 · ERROR DYNAMICS" data-index="13">
+      <div class="tag-badge amber">SEASONAL DYNAMICS</div>
       <h2 class="slide-title">Why Val Error > Test Error</h2>
       <p class="slide-subtitle">Synoptic atmospheric dynamics: Spring turbulence vs. Summer subtropical persistence</p>
       
@@ -1189,32 +1162,32 @@
           <div class="card-icon">⛈️</div>
           <div class="card-metric" style="color: var(--red);">7.0°F – 7.4°F</div>
           <div class="card-heading">Spring Validation (Apr–Jun)</div>
-          <div class="card-sub">Polar jet stream overhead; baroclinic instability drives frequent cold front collisions, severe squalls, and chaotic 20°F–30°F day-to-day temperature swings.</div>
+          <div class="card-sub">Active polar jet stream overhead. Cold fronts colliding with Gulf moisture trigger violent 20°F–30°F day-to-day temperature swings with chaotic predictability.</div>
         </div>
         <div class="card" style="border-color: rgba(16, 185, 129, 0.3);">
           <div class="card-icon">☀️</div>
           <div class="card-metric emerald">3.8°F – 4.3°F</div>
           <div class="card-heading">Summer Test (Jul–Sep)</div>
-          <div class="card-sub">The Bermuda Subtropical High parks over central NC. Quasi-stationary air masses with highly predictable solar diurnal heating curves.</div>
+          <div class="card-sub">Bermuda Subtropical High parks over central NC. Quasi-stationary air masses governed by stable, highly predictable diurnal solar heating curves.</div>
         </div>
       </div>
 
       <div class="speaker-note-content" hidden>
         <div class="notes-section">
           <span class="notes-label">🎯 Slide Objective</span>
-          <p>Explain why validation error is ~3°F higher than test error using real meteorological mechanics.</p>
+          <p>Explain why validation error is ~3°F higher than test error using synoptic meteorology.</p>
         </div>
         <div class="notes-section">
           <span class="notes-label">🗣️ Speaker Talking Points</span>
-          <p>"You might notice that validation error is around 7.2°F while test error is under 4.0°F. This is not overfitting; it is fundamental synoptic meteorology. In Spring (validation period), the jet stream sits directly over North Carolina, causing cold Canadian fronts to collide with warm Gulf moisture—producing violent 20-to-30 degree swings that are inherently chaotic at two-week horizons. By Summer (test period), the Bermuda Subtropical High parks over the region, creating stable, persistent air masses dominated by clean, predictable diurnal heating."</p>
+          <p>"Notice that validation error is around 7.2°F while test error is under 4.0°F. This is driven by real meteorology: In Spring, the jet stream sits directly over North Carolina, causing rapid cold front passages and 20-to-30 degree temperature swings that are inherently chaotic at 14 days. In Summer, the Bermuda Subtropical High parks over the region, producing stagnant, predictable air masses governed by solar heating."</p>
         </div>
       </div>
     </section>
 
     <!-- ==========================================
-         BLOCK 9: ERROR ANALYSIS — PART 2 (SLIDE 15)
+         BLOCK 9: ERROR DYNAMICS — PART 2 (SLIDE 14)
          ========================================== -->
-    <section class="slide" data-block="09 · ERROR DYNAMICS" data-index="15">
+    <section class="slide" data-block="09 · ERROR DYNAMICS" data-index="14">
       <div class="tag-badge amber">ANOMALY ANALYSIS</div>
       <h2 class="slide-title">Why Val Error ≈ SuperTest Error</h2>
       <p class="slide-subtitle">SuperTest is a single 14-day window during an extreme late-season heat wave</p>
@@ -1224,13 +1197,13 @@
           <div class="card-icon">🌡️</div>
           <div class="card-metric amber">92.0°F</div>
           <div class="card-heading">Late-September Heat Wave</div>
-          <div class="card-sub">Actual temperatures on Sep 17 reached 92°F, maintaining mid-80s highs through Sep 22. Historical 26-year climatology was 72°F! Climatology MAE spiked to 8.05°F in Week 1.</div>
+          <div class="card-sub">Actual temperatures reached 92°F on Sep 17 (20°F above climatology). Climatology base failed ($8.05^\circ\text{F}$ Week 1). Ridge captured initial thermal persistence.</div>
         </div>
         <div class="card">
           <div class="card-icon">📊</div>
           <div class="card-metric purple">N = 1</div>
           <div class="card-heading">Small Horizon Variance</div>
-          <div class="card-sub">Test evaluated 65 rolling windows; SuperTest is a single 14-day window containing an extreme climatic outlier. Retraining on Train+Val corrected deep models by over -1.04°F.</div>
+          <div class="card-sub">Test evaluated 65 rolling windows; SuperTest is a single 14-day sample with an extreme outlier. Retraining on Train+Val improved deep models by over <b>-1.04°F MAE</b>!</div>
         </div>
       </div>
 
@@ -1241,105 +1214,81 @@
         </div>
         <div class="notes-section">
           <span class="notes-label">🗣️ Speaker Talking Points</span>
-          <p>"Why is SuperTest error around 6.9°F, similar to Spring validation? The answer is sample size and an unseasonal heat wave. Between September 17 and 22, Raleigh experienced an extreme late-summer heat wave reaching 92°F—20 degrees above the historical 72°F average. Because SuperTest is a single 14-day evaluation sample rather than 65 rolling windows, it caught an unseasonal weather anomaly. When we retrained our deep models on data up to July 1, the 64-bin DenseNet improved by over 1.0°F MAE."</p>
+          <p>"Why is SuperTest error around 6.9°F, close to Spring validation? The answer is sample size and an unseasonal heat wave. On September 17, Raleigh experienced a late heat wave reaching 92°F—20 degrees above historical average. Because SuperTest is a single 14-day evaluation window rather than 65 rolling windows, it caught an unseasonal anomaly. Retraining our deep models on data through July 1 corrected the 64-bin DenseNet by over 1.0°F MAE."</p>
         </div>
       </div>
     </section>
 
     <!-- ==========================================
-         BLOCK 10: TIME EMBEDDINGS (SLIDE 16)
+         BLOCK 10: TIME EMBEDDINGS (SLIDE 15)
          ========================================== -->
-    <section class="slide" data-block="10 · EMBEDDING PHYSICS" data-index="16">
-      <div class="tag-badge">REPRESENTATION LEARNING</div>
+    <section class="slide" data-block="10 · EMBEDDING PHYSICS" data-index="15">
+      <div class="tag-badge emerald">EMBEDDING ANALYSIS</div>
       <h2 class="slide-title">Do Embeddings Learn Real Physics?</h2>
-      <p class="slide-subtitle">Given only integer tokens (1–12), does the latent space discover physical temperature?</p>
-      
-      <div class="formula-box">
-        $$\mathbf{u}_T = \frac{\mathbf{w}^*}{\|\mathbf{w}^*\|_2} \in \mathbb{R}^{16} \quad\longrightarrow\quad s_m = \langle \mathbf{e}_m, \mathbf{u}_T \rangle = \sum_{k=1}^{16} e_{m, k} \cdot u_{T, k}$$
-      </div>
-
-      <div class="cards-row cards-2">
-        <div class="card">
-          <div class="card-heading">Concept Direction Vector ($\mathbf{u}_T$)</div>
-          <div class="card-sub">Discovered via linear probing. Represents the unit 'thermal axis' pointing toward maximum heat inside the 16D month embedding space.</div>
-        </div>
-        <div class="card">
-          <div class="card-heading">Zero Explicit Supervision</div>
-          <div class="card-sub">The embedding table received only discrete categorical indices (1 to 12)—never raw ground-truth temperature labels!</div>
-        </div>
-      </div>
-
-      <div class="speaker-note-content" hidden>
-        <div class="notes-section">
-          <span class="notes-label">🎯 Slide Objective</span>
-          <p>Formulate the linear concept probing experiment on month embeddings.</p>
-        </div>
-        <div class="notes-section">
-          <span class="notes-label">🗣️ Speaker Talking Points</span>
-          <p>"A fundamental question in representation learning is: did our neural network memorize arbitrary calendar tokens, or did it discover real physical laws? To test this, we performed linear concept probing on the 16-dimensional month embedding space. We searched for a single 1D unit vector, $\mathbf{u}_T$, that corresponds to physical warmth. Remember: the model was NEVER given temperature labels for the calendar tokens; it only received integers 1 to 12."</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==========================================
-         BLOCK 10: TIME EMBEDDINGS (SLIDE 17)
-         ========================================== -->
-    <section class="slide" data-block="10 · EMBEDDING PHYSICS" data-index="17">
-      <div class="tag-badge emerald">REPRESENTATION LEARNING</div>
-      <h2 class="slide-title">Month-Temperature Resonance</h2>
-      <p class="slide-subtitle">Dot product projection achieves r = 0.9838 (R² = 0.9679) with ground-truth temperatures</p>
+      <p class="slide-subtitle">Month embeddings discover physical temperature without supervision</p>
       
       <div class="image-container" onclick="openLightbox('report/month_temperature_dot_product_deep_dive.png')">
         <img src="report/month_temperature_dot_product_deep_dive.png" alt="Month Temperature Dot Product Deep Dive">
       </div>
       <div class="image-caption">🔍 Click to enlarge · Probing Alignment (r=0.984) · Matched vs Mismatched PLE Dot Products · Resonance Heatmap</div>
 
+      <div class="cards-row cards-2" style="margin-top: 1rem;">
+        <div class="card" style="padding: 1.25rem;">
+          <div class="card-heading" style="color: var(--cyan); font-size: 1rem;">Linear Probing ($r = 0.9838$)</div>
+          <div class="card-sub">The dot product of 16D month embeddings with the concept axis correlates at 97% ($R^2=0.968$) with real 26-year ground truth temperatures!</div>
+        </div>
+        <div class="card" style="padding: 1.25rem;">
+          <div class="card-heading" style="color: var(--purple); font-size: 1rem;">Zero Temperature Labels Given</div>
+          <div class="card-sub">The model received only discrete integers (1–12), yet autonomously aligned July at $+1.11$ (heat peak) and January at $-1.21$ (cold trough).</div>
+        </div>
+      </div>
+
       <div class="speaker-note-content" hidden>
         <div class="notes-section">
           <span class="notes-label">🎯 Slide Objective</span>
-          <p>Showcase the empirical proof that embeddings learn true thermodynamic directions.</p>
+          <p>Demonstrate that neural embeddings learned meaningful physical directions matching real thermodynamics.</p>
         </div>
         <div class="notes-section">
           <span class="notes-label">🗣️ Speaker Talking Points</span>
-          <p>"Here is the result, shown across the three panels. In Panel 1, the dot product of month embeddings with our thermal concept axis achieves a remarkable Pearson correlation of r = 0.9838—an R-squared of nearly 97%—with real ground truth temperatures! July sits at +1.11, while January sits at -1.20. In Panels 2 and 3, bilinear dot products with Piecewise Linear Encoding (PLE) confirm that continuous temperature representations and discrete month tokens resonate in a unified thermodynamic coordinate space."</p>
+          <p>"To check whether our deep models learned arbitrary patterns or real physics, we performed linear concept probing on the 16-dimensional month embedding space. As shown in the figure, the learned month embeddings correlate at r = 0.9838 with ground-truth temperatures! Remember: the network was never given temperature labels for calendar tokens; it only received integers 1 to 12. Yet it autonomously organized July at the hot extreme and January at the cold extreme."</p>
         </div>
       </div>
     </section>
 
     <!-- ==========================================
-         BLOCK 10: TAKEAWAYS & CONCLUSION (SLIDE 18)
+         BLOCK 10: TAKEAWAYS (SLIDE 16)
          ========================================== -->
-    <section class="slide" data-block="10 · TAKEAWAYS" data-index="18">
-      <div class="tag-badge">SUMMARY & CONCLUSIONS</div>
-      <h2 class="slide-title">Key Takeaways</h2>
-      <p class="slide-subtitle">Core conclusions from 14-day operational weather forecasting</p>
+    <section class="slide" data-block="10 · KEY TAKEAWAYS" data-index="16">
+      <div class="tag-badge">KEY TAKEAWAYS</div>
+      <h2 class="slide-title">Robustness & Validation Strategy</h2>
+      <p class="slide-subtitle">Key conclusions for multi-week operational weather forecasting</p>
       
       <div class="cards-row cards-3">
         <div class="card">
           <div class="card-icon">🛡️</div>
-          <div class="card-heading" style="color: var(--cyan);">1. Residual Climatology</div>
-          <div class="card-sub">Decomposing predictions into empirical climatology + neural residual anomaly completely prevents multi-week diurnal cycle collapse.</div>
+          <div class="card-heading" style="color: var(--cyan);">1. Robustness Beats Complexity</div>
+          <div class="card-sub">Constrained, regularized models (Multi-output Ridge, regularized PatchTST) avoid overfitting to chaotic micro-fluctuations and generalize better.</div>
         </div>
         <div class="card">
-          <div class="card-icon">🏆</div>
-          <div class="card-heading" style="color: var(--emerald);">2. PatchTST SOTA</div>
-          <div class="card-sub">24-hour diurnal patching and channel independence achieved state-of-the-art holdout test performance at <b>3.87°F MAE</b>.</div>
+          <div class="card-icon">🎯</div>
+          <div class="card-heading" style="color: var(--emerald);">2. Season-Aligned Validation</div>
+          <div class="card-sub">Spring validation gave noisy signals due to frontal turbulence. Aligning validation with target season (e.g., September 2025 or late summer) is crucial for model selection.</div>
         </div>
         <div class="card">
-          <div class="card-icon">🧠</div>
-          <div class="card-heading" style="color: var(--purple);">3. Physical Embeddings</div>
-          <div class="card-sub">Decadal DenseNet time embeddings autonomously self-organize along thermodynamic axes ($r=0.984$) and transfer across architectures.</div>
+          <div class="card-icon">⚓</div>
+          <div class="card-heading" style="color: var(--purple);">3. Climatological Anchor</div>
+          <div class="card-sub">Predicting residual anomalies over historical climatology guarantees physically realistic diurnal oscillations even when 14-day predictability decays.</div>
         </div>
       </div>
 
       <div class="speaker-note-content" hidden>
         <div class="notes-section">
           <span class="notes-label">🎯 Slide Objective</span>
-          <p>Deliver punchy final takeaways and open the floor for questions.</p>
+          <p>Conclude with key takeaways focused on model robustness, season-aligned validation, and climatological priors.</p>
         </div>
         <div class="notes-section">
           <span class="notes-label">🗣️ Speaker Talking Points</span>
-          <p>"To conclude: First, residual climatology is an essential inductive bias that prevents long-horizon diurnal collapse. Second, PatchTST sets the state-of-the-art on rolling test windows at 3.87°F MAE. Third, neural time embeddings learn genuine physical thermodynamic coordinates that can be transferred across architectures. Thank you, and we welcome any questions."</p>
+          <p>"To conclude: First, model robustness is key to reducing overfitting. Highly constrained models like Ridge and regularized PatchTST outperform unconstrained architectures on long horizons. Second, validation alignment is critical: using Spring data gave misleadingly high error due to jet stream turbulence; validating on season-aligned periods like September 2025 or late summer gives far better guidance for operational deployment. Third, residual climatology provides an essential physical anchor. Thank you, and we welcome any questions."</p>
         </div>
       </div>
     </section>
@@ -1351,7 +1300,7 @@
     <div class="hud-block-name" id="hudBlockName">01 · TITLE</div>
     <div class="hud-divider"></div>
     <button class="hud-btn" id="prevBtn" title="Previous Slide (← / Backspace)" aria-label="Previous Slide">‹</button>
-    <div class="hud-counter" id="hudCounter">01 / 18</div>
+    <div class="hud-counter" id="hudCounter">01 / 16</div>
     <button class="hud-btn" id="nextBtn" title="Next Slide (→ / Space)" aria-label="Next Slide">›</button>
     <div class="hud-divider"></div>
     <button class="hud-btn" id="notesToggleBtn" title="Toggle Speaker Notes (N or S)" aria-label="Toggle Speaker Notes">📝</button>
@@ -1539,7 +1488,6 @@
 
     // Keyboard Event Listener
     window.addEventListener('keydown', (e) => {
-      // Ignore if typing in an input
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
 
       switch (e.key) {
