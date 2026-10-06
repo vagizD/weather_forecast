@@ -7,6 +7,36 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- MathJax 3 LaTeX Formula Engine (Offline-ready with CDN fallback) -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      startup: {
+        pageReady: () => {
+          return MathJax.startup.defaultPageReady();
+        }
+      }
+    };
+  </script>
+  <script src="assets/mathjax/tex-mml-chtml.js" id="MathJax-script"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      if (!window.MathJax || !window.MathJax.typesetPromise) {
+        const s = document.createElement('script');
+        s.src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js";
+        s.async = true;
+        document.head.appendChild(s);
+      }
+    });
+  </script>
   <style>
     :root {
       --bg: #090d16;
@@ -774,7 +804,7 @@
       <p class="slide-subtitle">NOAA solar position equations provide exact future extraterrestrial boundary conditions</p>
       
       <div class="formula-box">
-        $\text{Solar Zenith Angle } (\theta_z) \quad\longrightarrow\quad I_{\text{ext}} = I_{\text{sc}} \cdot E_0 \cdot \cos(\theta_z)^+$
+        $$\text{Solar Zenith Angle } (\theta_z) \quad\longrightarrow\quad I_{\text{ext}} = I_{\text{sc}} \cdot E_0 \cdot \cos(\theta_z)^+$$
       </div>
 
       <div class="cards-row cards-2">
@@ -875,7 +905,7 @@
       <p class="slide-subtitle">Predicting atmospheric residual anomalies over historical climatology</p>
       
       <div class="formula-box">
-        $\hat{y}(t) = \hat{y}_{\text{clim}}(t) + \hat{r}_\theta(t)$
+        $$\hat{y}(t) = \hat{y}_{\text{clim}}(t) + \hat{r}_\theta(t)$$
       </div>
 
       <div class="cards-row cards-2">
@@ -910,7 +940,7 @@
       <p class="slide-subtitle">Multi-horizon loss optimized across all 336 future hours simultaneously</p>
       
       <div class="formula-box">
-        $\mathcal{L}_{\text{MAE}} = \frac{1}{336}\sum_{h=1}^{336} |\hat{y}_{t+h} - y_{t+h}|$
+        $$\mathcal{L}_{\text{MAE}} = \frac{1}{336}\sum_{h=1}^{336} |\hat{y}_{t+h} - y_{t+h}|$$
       </div>
 
       <div class="cards-row cards-2">
@@ -1225,7 +1255,7 @@
       <p class="slide-subtitle">Given only integer tokens (1–12), does the latent space discover physical temperature?</p>
       
       <div class="formula-box">
-        $\mathbf{u}_T = \frac{\mathbf{w}^*}{\|\mathbf{w}^*\|_2} \in \mathbb{R}^{16} \quad\longrightarrow\quad s_m = \langle \mathbf{e}_m, \mathbf{u}_T \rangle = \sum_{k=1}^{16} e_{m, k} \cdot u_{T, k}$
+        $$\mathbf{u}_T = \frac{\mathbf{w}^*}{\|\mathbf{w}^*\|_2} \in \mathbb{R}^{16} \quad\longrightarrow\quad s_m = \langle \mathbf{e}_m, \mathbf{u}_T \rangle = \sum_{k=1}^{16} e_{m, k} \cdot u_{T, k}$$
       </div>
 
       <div class="cards-row cards-2">
@@ -1443,6 +1473,9 @@
       if (noteContentEl) {
         notesBody.innerHTML = noteContentEl.innerHTML;
         notesSlideTag.textContent = `(Slide ${index + 1} of ${totalSlides} · ${blockName})`;
+        if (window.MathJax && window.MathJax.typesetPromise) {
+          window.MathJax.typesetPromise([notesBody]).catch(() => {});
+        }
       } else {
         notesBody.innerHTML = '<p style="color: var(--text-faint);">No specific notes for this slide.</p>';
       }
