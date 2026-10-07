@@ -847,9 +847,72 @@
     </section>
 
     <!-- ==========================================
-         BLOCK 3: SOLAR PHYSICS & WHY IT MATTERS (SLIDE 3)
+         BLOCK 3: CLASSICAL INPUT FEATURES (SLIDE 3)
          ========================================== -->
-    <section class="slide" data-block="03 · SOLAR PHYSICS" data-index="3">
+    <section class="slide" data-block="03 · INPUT FEATURES" data-index="3">
+      <div class="tag-badge">INPUT FEATURES</div>
+      <h2 class="slide-title">Classical Model Inputs</h2>
+      <p class="slide-subtitle">Compact physical state vector extracted at forecast cutoff $t_0$</p>
+      
+      <div class="cards-row cards-4">
+        <div class="card">
+          <div class="card-icon">🌡️</div>
+          <div class="card-heading" style="color: var(--cyan);">Current State ($t_0$)</div>
+          <div class="card-sub">
+            • Ground Temp ($T_0$)<br>
+            • Dew Point & Pressure<br>
+            • Wind Speed & Clouds
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">⏱️</div>
+          <div class="card-heading" style="color: var(--purple);">Thermal Momentum</div>
+          <div class="card-sub">
+            • 24h & 48h Tendency ($\Delta T$)<br>
+            • Hourly Lags ($T_{-1} \dots T_{-72}$)<br>
+            • Rolling Mean & Std Dev
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">📊</div>
+          <div class="card-heading" style="color: var(--emerald);">Anomaly Memory</div>
+          <div class="card-sub">
+            • 72h Mean Anomaly<br>
+            • Delta vs Climatology<br>
+            • Air Mass Persistence
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">☀️</div>
+          <div class="card-heading" style="color: var(--amber);">Harmonic Clocks</div>
+          <div class="card-sub">
+            • Diurnal $\sin, \cos(\text{Hour})$<br>
+            • Annual $\sin, \cos(\text{DOY})$<br>
+            • Astronomical Prior
+          </div>
+        </div>
+      </div>
+
+      <div class="speaker-note-content" hidden>
+        <div class="notes-section">
+          <span class="notes-label">🎯 Slide Objective</span>
+          <p>Present the compact 11-to-21 feature antecedent state vector used by Ridge and LightGBM at forecast cutoff time.</p>
+        </div>
+        <div class="notes-section">
+          <span class="notes-label">🗣️ Speaker Talking Points</span>
+          <p>"What information do our classical models actually see at launch time? Classical models do not need massive sequence dumps—they rely on a compact 11-to-21 dimension feature vector capturing four physical signals at cutoff time $t_0$:</p>
+          <p>1. Current Observations: Instantaneous temperature, dew point, surface pressure, wind speed, and cloud cover.</p>
+          <p>2. Thermal Momentum: Multi-step lag statistics and 24-to-48 hour temperature changes to measure whether a frontal warming or cooling trend is underway.</p>
+          <p>3. Anomaly Memory: The 72-hour rolling deviation from historical climatology—this tells the model whether Raleigh is currently locked in an unseasonal heat wave or cold spell.</p>
+          <p>4. Harmonic Clocks: Sine and cosine cyclic coordinates of the hour and day of year to lock into astronomical diurnal and seasonal cycles."</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         BLOCK 4: SOLAR PHYSICS & WHY IT MATTERS (SLIDE 4)
+         ========================================== -->
+    <section class="slide" data-block="04 · SOLAR PHYSICS" data-index="4">
       <div class="tag-badge purple">SOLAR PHYSICS</div>
       <h2 class="slide-title">Solar Radiation Drives Weather</h2>
       <p class="slide-subtitle">Deterministic celestial geometry provides the fundamental diurnal energy budget</p>
@@ -884,9 +947,9 @@
     </section>
 
     <!-- ==========================================
-         BLOCK 3: THE CHALLENGE & MSE TRAP (SLIDE 4)
+         BLOCK 4: THE CHALLENGE & MSE TRAP (SLIDE 5)
          ========================================== -->
-    <section class="slide" data-block="03 · THE CHALLENGE" data-index="4">
+    <section class="slide" data-block="04 · THE CHALLENGE" data-index="5">
       <div class="tag-badge amber">THE CHALLENGE</div>
       <h2 class="slide-title">Why 14-Day Forecasting Fails</h2>
       <p class="slide-subtitle">Autoregressive compounding and the mathematical danger of MSE loss</p>
@@ -917,9 +980,9 @@
     </section>
 
     <!-- ==========================================
-         BLOCK 3: PHYSICAL ASSUMPTIONS & DECISIONS (SLIDE 5)
+         BLOCK 4: PHYSICAL ASSUMPTIONS & DECISIONS (SLIDE 6)
          ========================================== -->
-    <section class="slide" data-block="03 · ASSUMPTIONS & DECISIONS" data-index="5">
+    <section class="slide" data-block="04 · ASSUMPTIONS & DECISIONS" data-index="6">
       <div class="tag-badge emerald">PHYSICAL INDUCTIVE BIASES</div>
       <h2 class="slide-title">Assumptions & Modeling Decisions</h2>
       <p class="slide-subtitle">Every architectural decision is directly derived from atmospheric thermodynamics</p>
@@ -960,9 +1023,9 @@
     </section>
 
     <!-- ==========================================
-         BLOCK 4: OBJECTIVE & FORMULATION (SLIDE 6)
+         BLOCK 5: OBJECTIVE & FORMULATION (SLIDE 7)
          ========================================== -->
-    <section class="slide" data-block="04 · OBJECTIVE & FORMULATION" data-index="6">
+    <section class="slide" data-block="05 · OBJECTIVE & FORMULATION" data-index="7">
       <div class="tag-badge">OPTIMIZATION OBJECTIVE</div>
       <h2 class="slide-title">Residual Formulation with L1 Loss</h2>
       <p class="slide-subtitle">Decomposing predictions into climatology + neural residual anomalies using MAE</p>
@@ -995,9 +1058,9 @@
     </section>
 
     <!-- ==========================================
-         BLOCK 4: EVALUATION METRIC (SLIDE 7)
+         BLOCK 5: EVALUATION METRIC (SLIDE 8)
          ========================================== -->
-    <section class="slide" data-block="04 · EVALUATION METRIC" data-index="7">
+    <section class="slide" data-block="05 · EVALUATION METRIC" data-index="8">
       <div class="tag-badge purple">EVALUATION METRIC</div>
       <h2 class="slide-title">Primary Objective: MAE</h2>
       <p class="slide-subtitle">Continuous evaluation across all 336 future hours simultaneously</p>
@@ -1030,9 +1093,9 @@
     </section>
 
     <!-- ==========================================
-         BLOCK 5: SETUP & SPLIT (SLIDE 8)
+         BLOCK 6: SETUP & SPLIT (SLIDE 9)
          ========================================== -->
-    <section class="slide" data-block="05 · EXPERIMENTAL SETUP" data-index="8">
+    <section class="slide" data-block="06 · EXPERIMENTAL SETUP" data-index="9">
       <div class="tag-badge emerald">EXPERIMENTAL SETUP</div>
       <h2 class="slide-title">Chronological Split & Rolling Windows</h2>
       <p class="slide-subtitle">Strict chronological partitioning across 26 years; rolling multi-window evaluation</p>
@@ -1073,9 +1136,9 @@
     </section>
 
     <!-- ==========================================
-         BLOCK 6: APPROACH 1 — CLASSICAL (SLIDE 9)
+         BLOCK 7: APPROACH 1 — CLASSICAL (SLIDE 10)
          ========================================== -->
-    <section class="slide" data-block="06 · APPROACH 1: CLASSICAL" data-index="9">
+    <section class="slide" data-block="07 · APPROACH 1: CLASSICAL" data-index="10">
       <div class="tag-badge">APPROACH 1: CLASSICAL ML</div>
       <h2 class="slide-title">Multi-Output Ridge & LightGBM</h2>
       <p class="slide-subtitle">Closed-form 336-hour projection and gradient-boosted decision trees</p>
@@ -1114,9 +1177,9 @@
     </section>
 
     <!-- ==========================================
-         BLOCK 7: APPROACH 2 — DL (SLIDE 10)
+         BLOCK 8: APPROACH 2 — DL (SLIDE 11)
          ========================================== -->
-    <section class="slide" data-block="07 · APPROACH 2: DEEP LEARNING" data-index="10">
+    <section class="slide" data-block="08 · APPROACH 2: DEEP LEARNING" data-index="11">
       <div class="tag-badge purple">APPROACH 2: DEEP LEARNING</div>
       <h2 class="slide-title">Deep Learning: Core Intuition</h2>
       <p class="slide-subtitle">Two architectures designed to overcome weather forecasting challenges</p>
@@ -1153,9 +1216,9 @@
     </section>
 
     <!-- ==========================================
-         BLOCK 8: RESULTS TABLE (SLIDE 11)
+         BLOCK 9: RESULTS TABLE (SLIDE 12)
          ========================================== -->
-    <section class="slide" data-block="08 · BENCHMARK RESULTS" data-index="11">
+    <section class="slide" data-block="09 · BENCHMARK RESULTS" data-index="12">
       <div class="tag-badge emerald">BENCHMARK RESULTS</div>
       <h2 class="slide-title">Model Evaluation Benchmark</h2>
       <p class="slide-subtitle">Sequential discovery across Validation, Test, and Locked SuperTest</p>
@@ -1239,9 +1302,9 @@
     </section>
 
     <!-- ==========================================
-         BLOCK 9: ERROR DYNAMICS — PART 1 (SLIDE 12)
+         BLOCK 10: ERROR DYNAMICS — PART 1 (SLIDE 13)
          ========================================== -->
-    <section class="slide" data-block="09 · ERROR DYNAMICS" data-index="12">
+    <section class="slide" data-block="10 · ERROR DYNAMICS" data-index="13">
       <div class="tag-badge amber">SEASONAL DYNAMICS</div>
       <h2 class="slide-title">Why Val Error > Test Error</h2>
       <p class="slide-subtitle">Synoptic atmospheric dynamics: Spring turbulence vs. Summer subtropical persistence</p>
@@ -1274,9 +1337,9 @@
     </section>
 
     <!-- ==========================================
-         BLOCK 9: ERROR DYNAMICS — PART 2 (SLIDE 13)
+         BLOCK 10: ERROR DYNAMICS — PART 2 (SLIDE 14)
          ========================================== -->
-    <section class="slide" data-block="09 · ERROR DYNAMICS" data-index="13">
+    <section class="slide" data-block="10 · ERROR DYNAMICS" data-index="14">
       <div class="tag-badge amber">ANOMALY ANALYSIS</div>
       <h2 class="slide-title">Why Val Error ≈ SuperTest Error</h2>
       <p class="slide-subtitle">SuperTest is a single 14-day window during an extreme late-season heat wave</p>
@@ -1309,9 +1372,9 @@
     </section>
 
     <!-- ==========================================
-         BLOCK 10: TIME EMBEDDINGS (SLIDE 14)
+         BLOCK 11: TIME EMBEDDINGS (SLIDE 15)
          ========================================== -->
-    <section class="slide" data-block="10 · EMBEDDING PHYSICS" data-index="14">
+    <section class="slide" data-block="11 · EMBEDDING PHYSICS" data-index="15">
       <div class="tag-badge emerald">EMBEDDING ANALYSIS</div>
       <h2 class="slide-title">Do Embeddings Learn Real Physics?</h2>
       <p class="slide-subtitle">Month embeddings discover physical temperature without supervision</p>
@@ -1345,9 +1408,9 @@
     </section>
 
     <!-- ==========================================
-         BLOCK 10: TAKEAWAYS (SLIDE 15)
+         BLOCK 11: TAKEAWAYS (SLIDE 16)
          ========================================== -->
-    <section class="slide" data-block="10 · KEY TAKEAWAYS" data-index="15">
+    <section class="slide" data-block="11 · KEY TAKEAWAYS" data-index="16">
       <div class="tag-badge">KEY TAKEAWAYS</div>
       <h2 class="slide-title">Robustness & Validation Strategy</h2>
       <p class="slide-subtitle">Key conclusions for multi-week operational weather forecasting</p>
@@ -1390,7 +1453,7 @@
     <div class="hud-block-name" id="hudBlockName">01 · TITLE</div>
     <div class="hud-divider"></div>
     <button class="hud-btn" id="prevBtn" title="Previous Slide (← / Backspace)" aria-label="Previous Slide">‹</button>
-    <div class="hud-counter" id="hudCounter">01 / 15</div>
+    <div class="hud-counter" id="hudCounter">01 / 16</div>
     <button class="hud-btn" id="nextBtn" title="Next Slide (→ / Space)" aria-label="Next Slide">›</button>
     <div class="hud-divider"></div>
     <button class="hud-btn" id="notesToggleBtn" title="Toggle Speaker Notes (N or S)" aria-label="Toggle Speaker Notes">📝</button>
@@ -1502,11 +1565,11 @@
       if (index < 0) index = 0;
       if (index >= totalSlides) index = totalSlides - 1;
 
-      // Reset or align benchmark table stage if entering slide 10 (Benchmark Results)
-      if (index === 10) {
-        if (currentSlide < 10) {
+      // Reset or align benchmark table stage if entering slide 11 (Benchmark Results)
+      if (index === 11) {
+        if (currentSlide < 11) {
           setBenchmarkStage(1);
-        } else if (currentSlide > 10) {
+        } else if (currentSlide > 11) {
           setBenchmarkStage(3);
         }
       }
@@ -1550,8 +1613,8 @@
     }
 
     function nextSlide() {
-      // If on Benchmark Results slide (slide index 10) and not yet at stage 3, reveal next stage
-      if (currentSlide === 10 && currentBenchmarkStage < 3) {
+      // If on Benchmark Results slide (slide index 11) and not yet at stage 3, reveal next stage
+      if (currentSlide === 11 && currentBenchmarkStage < 3) {
         setBenchmarkStage(currentBenchmarkStage + 1);
         return;
       }
@@ -1561,8 +1624,8 @@
     }
 
     function prevSlide() {
-      // If on Benchmark Results slide (slide index 10) and not at stage 1, step back stage
-      if (currentSlide === 10 && currentBenchmarkStage > 1) {
+      // If on Benchmark Results slide (slide index 11) and not at stage 1, step back stage
+      if (currentSlide === 11 && currentBenchmarkStage > 1) {
         setBenchmarkStage(currentBenchmarkStage - 1);
         return;
       }
