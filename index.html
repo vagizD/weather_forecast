@@ -1353,31 +1353,32 @@
       <p class="slide-subtitle">Key conclusions for multi-week operational weather forecasting</p>
       
       <div class="cards-row cards-3">
-        <div class="card">
-          <div class="card-icon">🛡️</div>
-          <div class="card-heading" style="color: var(--cyan);">1. Robustness Beats Complexity</div>
-          <div class="card-sub">Constrained, regularized models (Multi-output Ridge, regularized PatchTST) avoid overfitting to chaotic micro-fluctuations and generalize better.</div>
+        <div class="card" style="align-items: center; text-align: center; padding: 2.5rem 1.5rem;">
+          <div class="card-icon" style="font-size: 2.8rem; margin-bottom: 1.25rem;">🛡️</div>
+          <div class="card-heading" style="color: var(--cyan); font-size: 1.25rem;">Robustness Over Complexity</div>
         </div>
-        <div class="card">
-          <div class="card-icon">🎯</div>
-          <div class="card-heading" style="color: var(--emerald);">2. Season-Aligned Validation</div>
-          <div class="card-sub">Spring validation gave noisy signals due to frontal turbulence. Aligning validation with target season (e.g., September 2025 or late summer) is crucial for model selection.</div>
+        <div class="card" style="align-items: center; text-align: center; padding: 2.5rem 1.5rem;">
+          <div class="card-icon" style="font-size: 2.8rem; margin-bottom: 1.25rem;">🎯</div>
+          <div class="card-heading" style="color: var(--emerald); font-size: 1.25rem;">Season-Aligned Validation</div>
         </div>
-        <div class="card">
-          <div class="card-icon">⚓</div>
-          <div class="card-heading" style="color: var(--purple);">3. Climatological Anchor</div>
-          <div class="card-sub">Predicting residual anomalies over historical climatology guarantees physically realistic diurnal oscillations even when 14-day predictability decays.</div>
+        <div class="card" style="align-items: center; text-align: center; padding: 2.5rem 1.5rem;">
+          <div class="card-icon" style="font-size: 2.8rem; margin-bottom: 1.25rem;">⚓</div>
+          <div class="card-heading" style="color: var(--purple); font-size: 1.25rem;">Climatological Anchor</div>
         </div>
       </div>
 
       <div class="speaker-note-content" hidden>
         <div class="notes-section">
           <span class="notes-label">🎯 Slide Objective</span>
-          <p>Conclude with key takeaways focused on model robustness, season-aligned validation, and climatological priors.</p>
+          <p>Conclude with three punchy takeaways: model robustness, season-aligned validation, and climatological anchoring.</p>
         </div>
         <div class="notes-section">
           <span class="notes-label">🗣️ Speaker Talking Points</span>
-          <p>"To conclude: First, model robustness is key to reducing overfitting. Highly constrained models like Ridge and regularized PatchTST outperform unconstrained architectures on long horizons. Second, validation alignment is critical: using Spring data gave misleadingly high error due to jet stream turbulence; validating on season-aligned periods like September 2025 or late summer gives far better guidance for operational deployment. Third, residual climatology provides an essential physical anchor. Thank you, and we welcome any questions."</p>
+          <p>"To conclude, our multi-week forecast study leaves us with three fundamental principles:</p>
+          <p><b>1. Robustness Over Complexity:</b> On long 14-day horizons, constrained, highly regularized models like Multi-Output Ridge and regularized PatchTST outperform complex architectures because they refuse to overfit to chaotic micro-fluctuations.</p>
+          <p><b>2. Season-Aligned Validation:</b> Spring validation gave misleadingly high error signals due to severe polar jet stream turbulence. Selecting models based on season-aligned periods—like September 2025 or late summer—is essential for real-world deployment.</p>
+          <p><b>3. Climatological Anchor:</b> Decomposing temperature into residual anomalies over empirical historical climatology provides an indispensable physical anchor, ensuring diurnal oscillations never collapse into unphysical flat lines even when predictability decays.</p>
+          <p>Thank you very much. We are now happy to take any questions."</p>
         </div>
       </div>
     </section>
