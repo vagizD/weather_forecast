@@ -380,45 +380,137 @@
 
     tr:last-child td { border-bottom: none; }
 
-    tr.highlight-champion {
-      background: rgba(0, 240, 255, 0.06);
-    }
-
-    tr.highlight-champion td {
-      color: #fff;
-      font-weight: 600;
-    }
-
     .metric-cell {
       font-family: var(--font-mono);
       font-weight: 600;
     }
 
-    .badge-champ {
+    /* Table Transition Stage Styles */
+    .table-stage-controls {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .stage-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.45rem 1.1rem;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .stage-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-bright);
+    }
+
+    .stage-btn.active {
+      background: rgba(0, 240, 255, 0.15);
+      border-color: var(--cyan);
+      color: var(--cyan);
+      box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+    }
+
+    .badge-tag {
       display: inline-flex;
       align-items: center;
       gap: 0.35rem;
-      padding: 0.2rem 0.6rem;
+      padding: 0.18rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+      transition: all var(--transition-fast);
+    }
+
+    .badge-green {
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid var(--emerald);
+      color: var(--emerald);
+    }
+
+    .badge-cyan {
       background: rgba(0, 240, 255, 0.15);
       border: 1px solid var(--cyan);
       color: var(--cyan);
-      border-radius: 6px;
-      font-size: 0.75rem;
-      font-weight: 700;
     }
+
+    .badge-gold {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid var(--amber);
+      color: var(--amber);
+    }
+
+    /* Stage 1: Validation Split Only */
+    table.stage-1 .col-test,
+    table.stage-1 .col-locked {
+      opacity: 0.12;
+      filter: blur(4px);
+      user-select: none;
+      transition: all var(--transition-smooth);
+    }
+    table.stage-1 .badge-val { display: inline-flex !important; }
+    table.stage-1 .badge-test,
+    table.stage-1 .badge-locked { display: none !important; }
+    table.stage-1 tr#row-lgb { background: rgba(16, 185, 129, 0.08); }
+
+    /* Stage 2: Reveal Test Split */
+    table.stage-2 .col-val,
+    table.stage-2 .col-test {
+      opacity: 1;
+      filter: none;
+      transition: all var(--transition-smooth);
+    }
+    table.stage-2 .col-locked {
+      opacity: 0.12;
+      filter: blur(4px);
+      user-select: none;
+      transition: all var(--transition-smooth);
+    }
+    table.stage-2 .badge-val { display: inline-flex !important; opacity: 0.55; }
+    table.stage-2 .badge-test { display: inline-flex !important; }
+    table.stage-2 .badge-locked { display: none !important; }
+    table.stage-2 tr#row-pt { background: rgba(0, 240, 255, 0.08); }
+
+    /* Stage 3: Reveal Locked SuperTest */
+    table.stage-3 .col-val,
+    table.stage-3 .col-test,
+    table.stage-3 .col-locked {
+      opacity: 1;
+      filter: none;
+      transition: all var(--transition-smooth);
+    }
+    table.stage-3 .badge-val { display: inline-flex !important; opacity: 0.55; }
+    table.stage-3 .badge-test { display: inline-flex !important; opacity: 0.55; }
+    table.stage-3 .badge-locked { display: inline-flex !important; }
+    table.stage-3 tr#row-ridge { background: rgba(245, 158, 11, 0.08); }
 
     /* Formulas & Code boxes */
     .formula-box {
       background: rgba(0, 0, 0, 0.45);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 12px;
-      padding: 1.25rem 2.25rem;
+      padding: 1.5rem 2.25rem;
       color: var(--cyan);
       text-align: center;
       margin: 1rem 0;
       box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
       width: 100%;
       max-width: 950px;
+      line-height: 1.8;
+      overflow-x: auto;
     }
 
     /* Floating Presenter HUD */
@@ -755,44 +847,9 @@
     </section>
 
     <!-- ==========================================
-         BLOCK 3: DATA SOURCING (SLIDE 3)
+         BLOCK 3: SOLAR PHYSICS & WHY IT MATTERS (SLIDE 3)
          ========================================== -->
-    <section class="slide" data-block="03 · DATA & METEOROLOGY" data-index="3">
-      <div class="tag-badge">DATA SOURCING</div>
-      <h2 class="slide-title">26 Years of Sensor Observations</h2>
-      <p class="slide-subtitle">234,144 continuous hourly steps (2000–2026)</p>
-      
-      <div class="cards-row cards-2">
-        <div class="card">
-          <div class="card-icon">📡</div>
-          <div class="card-metric">ASOS</div>
-          <div class="card-heading">NOAA Ground-Truth Sensors</div>
-          <div class="card-sub">Direct station sensors at KRDU: 2m temperature (`target_tmpf`), dew point, barometric pressure, wind vectors, and clouds.</div>
-        </div>
-        <div class="card">
-          <div class="card-icon">🌍</div>
-          <div class="card-metric purple">ERA5-Land</div>
-          <div class="card-heading">Atmospheric Reanalysis</div>
-          <div class="card-sub">High-resolution boundary layer thermodynamics via Open-Meteo: vapor pressure deficit (VPD), specific humidity, solar radiation.</div>
-        </div>
-      </div>
-
-      <div class="speaker-note-content" hidden>
-        <div class="notes-section">
-          <span class="notes-label">🎯 Slide Objective</span>
-          <p>Explain the scale and quality of the historical sensor dataset.</p>
-        </div>
-        <div class="notes-section">
-          <span class="notes-label">🗣️ Speaker Talking Points</span>
-          <p>"To build reliable models, we sourced 26 continuous years of hourly data from 2000 to 2026—over 234,000 steps. We combine NOAA ASOS station sensors at KRDU for physical ground truth with ERA5-Land reanalysis for atmospheric thermodynamic quantities like humidity and vapor pressure deficit."</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==========================================
-         BLOCK 3: SOLAR PHYSICS & WHY IT MATTERS (SLIDE 4)
-         ========================================== -->
-    <section class="slide" data-block="03 · DATA & METEOROLOGY" data-index="4">
+    <section class="slide" data-block="03 · SOLAR PHYSICS" data-index="3">
       <div class="tag-badge purple">SOLAR PHYSICS</div>
       <h2 class="slide-title">Solar Radiation Drives Weather</h2>
       <p class="slide-subtitle">Deterministic celestial geometry provides the fundamental diurnal energy budget</p>
@@ -827,9 +884,9 @@
     </section>
 
     <!-- ==========================================
-         BLOCK 3: THE CHALLENGE & MSE TRAP (SLIDE 5)
+         BLOCK 3: THE CHALLENGE & MSE TRAP (SLIDE 4)
          ========================================== -->
-    <section class="slide" data-block="03 · THE CHALLENGE" data-index="5">
+    <section class="slide" data-block="03 · THE CHALLENGE" data-index="4">
       <div class="tag-badge amber">THE CHALLENGE</div>
       <h2 class="slide-title">Why 14-Day Forecasting Fails</h2>
       <p class="slide-subtitle">Autoregressive compounding and the mathematical danger of MSE loss</p>
@@ -860,53 +917,63 @@
     </section>
 
     <!-- ==========================================
-         BLOCK 3: PHYSICAL ASSUMPTIONS (SLIDE 6)
+         BLOCK 3: PHYSICAL ASSUMPTIONS & DECISIONS (SLIDE 5)
          ========================================== -->
-    <section class="slide" data-block="03 · PHYSICAL ASSUMPTIONS" data-index="6">
-      <div class="tag-badge emerald">PHYSICAL ASSUMPTIONS</div>
-      <h2 class="slide-title">Core Physical Assumptions</h2>
-      <p class="slide-subtitle">Deriving modeling inductive biases from atmospheric thermodynamics</p>
+    <section class="slide" data-block="03 · ASSUMPTIONS & DECISIONS" data-index="5">
+      <div class="tag-badge emerald">PHYSICAL INDUCTIVE BIASES</div>
+      <h2 class="slide-title">Assumptions & Modeling Decisions</h2>
+      <p class="slide-subtitle">Every architectural decision is directly derived from atmospheric thermodynamics</p>
       
       <div class="cards-row cards-2">
         <div class="card">
           <div class="card-metric emerald">01</div>
-          <div class="card-heading">Diurnal Invariance</div>
-          <div class="card-sub">The sun rises and sets regardless of weather chaos. The 24-hour temperature oscillation must be preserved even at Day 14.</div>
+          <div class="card-heading" style="color: var(--emerald);">Diurnal Invariance</div>
+          <div class="card-sub" style="margin-bottom: 0.75rem;">
+            <b>Assumption:</b> 24-hour solar heating cycle persists regardless of synoptic chaos.
+          </div>
+          <div class="card-sub" style="border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 0.75rem; color: var(--cyan);">
+            <b>Decision:</b> 24-hour diurnal patch tokenization & deterministic solar angle conditioning.
+          </div>
         </div>
         <div class="card">
-          <div class="card-metric emerald">02</div>
-          <div class="card-heading">Climatological Reversion</div>
-          <div class="card-sub">Beyond the synoptic predictability horizon (~7 days), atmospheric anomalies must smoothly revert to 26-year historical climatology.</div>
+          <div class="card-metric purple">02</div>
+          <div class="card-heading" style="color: var(--purple);">Climatological Reversion</div>
+          <div class="card-sub" style="margin-bottom: 0.75rem;">
+            <b>Assumption:</b> Synoptic memory decays beyond 7 days; anomalies revert to mean.
+          </div>
+          <div class="card-sub" style="border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 0.75rem; color: var(--cyan);">
+            <b>Decision:</b> Residual climatology formulation ($\widehat{y}(t) = y_{\text{clim}}(t) + \widehat{r}_\theta(t)$).
+          </div>
         </div>
       </div>
 
       <div class="speaker-note-content" hidden>
         <div class="notes-section">
           <span class="notes-label">🎯 Slide Objective</span>
-          <p>Present the two core physical assumptions that govern our architecture.</p>
+          <p>Connect atmospheric physics directly to concrete architecture decisions.</p>
         </div>
         <div class="notes-section">
           <span class="notes-label">🗣️ Speaker Talking Points</span>
-          <p>"To prevent these failure modes, we build on two fundamental physical assumptions: First, Diurnal Invariance—the daily heating cycle is persistent and must never collapse. Second, Climatological Reversion—after atmospheric memory fades around Day 7, the most physically grounded forecast is the 26-year historical climatological curve."</p>
+          <p>"We make two fundamental physical assumptions that dictate our modeling decisions: First, Diurnal Invariance—the daily heating cycle is persistent, which drove our decision to use 24-hour patch tokenization and deterministic astronomical solar conditioning. Second, Climatological Reversion—because atmospheric memory fades beyond 7 days, we decided to formulate the problem as predicting residual anomalies over 26-year historical climatology, rather than predicting raw temperature in a vacuum."</p>
         </div>
       </div>
     </section>
 
     <!-- ==========================================
-         BLOCK 4: OBJECTIVE & FORMULATION (SLIDE 7)
+         BLOCK 4: OBJECTIVE & FORMULATION (SLIDE 6)
          ========================================== -->
-    <section class="slide" data-block="04 · OBJECTIVE & FORMULATION" data-index="7">
+    <section class="slide" data-block="04 · OBJECTIVE & FORMULATION" data-index="6">
       <div class="tag-badge">OPTIMIZATION OBJECTIVE</div>
       <h2 class="slide-title">Residual Formulation with L1 Loss</h2>
       <p class="slide-subtitle">Decomposing predictions into climatology + neural residual anomalies using MAE</p>
       
       <div class="formula-box">
-        $$\hat{y}(t) = \hat{y}_{\text{clim}}(t) + \hat{r}_\theta(t), \qquad \min_\theta \frac{1}{336}\sum_{h=1}^{336} |\hat{y}_{t+h} - y_{t+h}|$$
+        $$\widehat{y}(t) = y_{\text{clim}}(t) + \widehat{r}_\theta(t), \qquad \min_\theta \frac{1}{336}\sum_{h=1}^{336} \left| \widehat{y}_{t+h} - y_{t+h} \right|$$
       </div>
 
       <div class="cards-row cards-2">
         <div class="card">
-          <div class="card-heading">1. Climatological Prior $\hat{y}_{\text{clim}}(t)$</div>
+          <div class="card-heading">1. Climatological Prior $y_{\text{clim}}(t)$</div>
           <div class="card-sub">Zero-parameter empirical 26-year average for each (Day of Year, Hour). Guarantees realistic diurnal amplitude.</div>
         </div>
         <div class="card">
@@ -928,42 +995,44 @@
     </section>
 
     <!-- ==========================================
-         BLOCK 4: METRICS (SLIDE 8)
+         BLOCK 4: EVALUATION METRIC (SLIDE 7)
          ========================================== -->
-    <section class="slide" data-block="04 · EVALUATION METRICS" data-index="8">
-      <div class="tag-badge purple">EVALUATION METRICS</div>
-      <h2 class="slide-title">How We Measure Success</h2>
+    <section class="slide" data-block="04 · EVALUATION METRIC" data-index="7">
+      <div class="tag-badge purple">EVALUATION METRIC</div>
+      <h2 class="slide-title">Primary Objective: MAE</h2>
       <p class="slide-subtitle">Continuous evaluation across all 336 future hours simultaneously</p>
       
-      <div class="cards-row cards-2">
-        <div class="card">
-          <div class="card-metric">MAE</div>
-          <div class="card-heading">Mean Absolute Error (°F)</div>
-          <div class="card-sub"><b>Primary Metric.</b> Directly measures expected temperature error in degrees Fahrenheit across the full 14-day horizon.</div>
-        </div>
-        <div class="card">
-          <div class="card-metric purple">RMSE</div>
-          <div class="card-heading">Root Mean Squared Error (°F)</div>
-          <div class="card-sub"><b>Secondary Metric.</b> Penalizes tail risk, large thermal busts, and timing errors on severe cold front passages.</div>
+      <div class="formula-box" style="max-width: 680px;">
+        $$\text{MAE} = \frac{1}{336} \sum_{h=1}^{336} \left| y_{t+h} - \widehat{y}_{t+h} \right|$$
+      </div>
+
+      <div class="cards-row" style="max-width: 680px; justify-content: center;">
+        <div class="card" style="text-align: center; align-items: center; width: 100%;">
+          <div class="card-metric" style="font-size: 3.2rem;">MAE (°F)</div>
+          <div class="card-heading">Mean Absolute Error</div>
+          <div class="card-sub">
+            Direct physical interpretation in degrees Fahrenheit.<br>
+            Evaluates the entire continuous 14-day trajectory simultaneously.
+          </div>
         </div>
       </div>
 
       <div class="speaker-note-content" hidden>
         <div class="notes-section">
           <span class="notes-label">🎯 Slide Objective</span>
-          <p>Clarify reporting metrics: MAE as primary operational measure, RMSE for tail risk.</p>
+          <p>Define the sole evaluation objective: continuous 336-hour Mean Absolute Error in degrees Fahrenheit.</p>
         </div>
         <div class="notes-section">
           <span class="notes-label">🗣️ Speaker Talking Points</span>
-          <p>"We report two metrics: Mean Absolute Error (MAE) in degrees Fahrenheit across all 336 hours as our primary benchmark, and Root Mean Squared Error (RMSE) to capture tail risk and severe frontal mispredictions."</p>
+          <p>"Our primary evaluation metric is Mean Absolute Error (MAE) in degrees Fahrenheit across all 336 hours simultaneously. It provides a direct, intuitive measure of temperature error across the full 14-day horizon."</p>
         </div>
       </div>
     </section>
 
     <!-- ==========================================
-         BLOCK 5: SETUP & SPLIT (SLIDE 9)
+         BLOCK 5: SETUP & SPLIT (SLIDE 8)
          ========================================== -->
-    <section class="slide" data-block="05 · EXPERIMENTAL SETUP" data-index="9">
+    <section class="slide" data-block="05 · EXPERIMENTAL SETUP" data-index="8">
       <div class="tag-badge emerald">EXPERIMENTAL SETUP</div>
       <h2 class="slide-title">Chronological Split & Rolling Windows</h2>
       <p class="slide-subtitle">Strict chronological partitioning across 26 years; rolling multi-window evaluation</p>
@@ -1004,42 +1073,50 @@
     </section>
 
     <!-- ==========================================
-         BLOCK 6: APPROACH 1 — CLASSICAL (SLIDE 10)
+         BLOCK 6: APPROACH 1 — CLASSICAL (SLIDE 9)
          ========================================== -->
-    <section class="slide" data-block="06 · APPROACH 1: CLASSICAL" data-index="10">
+    <section class="slide" data-block="06 · APPROACH 1: CLASSICAL" data-index="9">
       <div class="tag-badge">APPROACH 1: CLASSICAL ML</div>
       <h2 class="slide-title">Multi-Output Ridge & LightGBM</h2>
-      <p class="slide-subtitle">How classical models predict all 336 future hours simultaneously</p>
+      <p class="slide-subtitle">Closed-form 336-hour projection and gradient-boosted decision trees</p>
       
       <div class="cards-row cards-2">
         <div class="card">
           <div class="card-icon">📈</div>
-          <div class="card-heading" style="color: var(--cyan);">Multi-Output Ridge Matrix ($\mathbf{W} \in \mathbb{R}^{336 \times D}$)</div>
-          <div class="card-sub">Standard Scikit-Learn Ridge predicts a single scalar. We formulate a <b>multi-output projection matrix $\mathbf{W}$</b> mapping the antecedent cutoff state directly to all 336 future residuals in closed form!</div>
+          <div class="card-heading" style="color: var(--cyan);">Multi-Output Ridge</div>
+          <div class="card-sub">Formulates a multi-output projection matrix $\mathbf{W}$ mapping the antecedent history state directly to all 336 future residuals in closed form simultaneously.</div>
         </div>
         <div class="card">
           <div class="card-icon">🌲</div>
           <div class="card-heading" style="color: var(--purple);">LightGBM (GBDT)</div>
-          <div class="card-sub">150 gradient-boosted decision trees (`num_leaves=31`, `lr=0.03`) trained on lag statistics, rolling momentum windows, solar angles, and calendar features. Strong tabular baseline.</div>
+          <div class="card-sub">Gradient-boosted decision trees trained on rolling lag statistics, momentum windows, solar zenith angles, and calendar features. Strong tabular baseline.</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 1.25rem; width: 100%; max-width: 950px; flex-direction: row; align-items: center; gap: 1.25rem; padding: 1.25rem 1.75rem;">
+        <div class="card-icon" style="margin-bottom: 0; font-size: 1.8rem;">⚙️</div>
+        <div>
+          <div class="card-heading" style="font-size: 1rem; color: var(--emerald); margin-bottom: 0.25rem;">Hyperparameter Tuning Strategy</div>
+          <div class="card-sub" style="font-size: 0.88rem;">Tuned via rolling-window time series validation grid search on training splits (optimizing L2 regularization $\alpha$, tree depth, and learning rates to prevent overfitting).</div>
         </div>
       </div>
 
       <div class="speaker-note-content" hidden>
         <div class="notes-section">
           <span class="notes-label">🎯 Slide Objective</span>
-          <p>Explain how Ridge is formulated for 336 hours (multi-output projection matrix) and introduce LightGBM.</p>
+          <p>Explain how Ridge is formulated for 336 hours, introduce LightGBM, and detail hyperparameter tuning.</p>
         </div>
         <div class="notes-section">
           <span class="notes-label">🗣️ Speaker Talking Points</span>
-          <p>"How do classical models predict a 336-hour curve? By default, scikit-learn models predict a single number. Instead of running 336 separate models or autoregressive loops, we formulated Multi-Output Ridge Regression: a closed-form weight matrix $\mathbf{W}$ of shape 336 by $D$. One matrix multiplication projects the 168-hour history state directly into all 336 future residuals simultaneously. For LightGBM, we trained 150 gradient-boosted trees over rolling lag statistics and solar angles."</p>
+          <p>"For classical ML, we formulated Multi-Output Ridge Regression: a closed-form projection matrix mapping the history state directly to all 336 future residuals simultaneously. For LightGBM, we trained gradient-boosted trees over rolling lag statistics and solar angles. Both models were tuned using rolling-window time series cross-validation on historical training splits to optimize regularization and avoid multi-week overfitting."</p>
         </div>
       </div>
     </section>
 
     <!-- ==========================================
-         BLOCK 7: APPROACH 2 — DL (SLIDE 11, COMBINED & INTUITIVE)
+         BLOCK 7: APPROACH 2 — DL (SLIDE 10)
          ========================================== -->
-    <section class="slide" data-block="07 · APPROACH 2: DEEP LEARNING" data-index="11">
+    <section class="slide" data-block="07 · APPROACH 2: DEEP LEARNING" data-index="10">
       <div class="tag-badge purple">APPROACH 2: DEEP LEARNING</div>
       <h2 class="slide-title">Deep Learning: Core Intuition</h2>
       <p class="slide-subtitle">Two architectures designed to overcome weather forecasting challenges</p>
@@ -1076,62 +1153,74 @@
     </section>
 
     <!-- ==========================================
-         BLOCK 8: RESULTS TABLE (SLIDE 12)
+         BLOCK 8: RESULTS TABLE (SLIDE 11)
          ========================================== -->
-    <section class="slide" data-block="08 · BENCHMARK RESULTS" data-index="12">
+    <section class="slide" data-block="08 · BENCHMARK RESULTS" data-index="11">
       <div class="tag-badge emerald">BENCHMARK RESULTS</div>
       <h2 class="slide-title">Model Evaluation Benchmark</h2>
-      <p class="slide-subtitle">Single row per model, ordered: Climatology, Ridge, LightGBM, PatchTST, DCT</p>
+      <p class="slide-subtitle">Sequential discovery across Validation, Test, and Locked SuperTest</p>
       
+      <div class="table-stage-controls">
+        <button class="stage-btn active" id="btnStage1" onclick="setBenchmarkStage(1)">1. Validation Only</button>
+        <button class="stage-btn" id="btnStage2" onclick="setBenchmarkStage(2)">2. Reveal Test Split</button>
+        <button class="stage-btn" id="btnStage3" onclick="setBenchmarkStage(3)">3. Reveal Locked SuperTest</button>
+      </div>
+
       <div class="table-wrapper">
-        <table>
+        <table id="benchmarkTable" class="stage-1">
           <thead>
             <tr>
               <th>Model Architecture</th>
-              <th>Val MAE (°F)</th>
-              <th>Test MAE (°F)</th>
-              <th>SuperTest (Zero-Shot)</th>
-              <th>SuperTest (Retrained)</th>
+              <th class="col-val">Val MAE (°F)</th>
+              <th class="col-test">Test MAE (°F)</th>
+              <th class="col-locked">SuperTest (Zero-Shot)</th>
+              <th class="col-locked">SuperTest (Retrained)</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td><strong>Climatology Base</strong></td>
-              <td class="metric-cell">7.43</td>
-              <td class="metric-cell">4.35</td>
-              <td class="metric-cell">6.94</td>
-              <td class="metric-cell">6.94</td>
+              <td class="metric-cell col-val">7.43</td>
+              <td class="metric-cell col-test">4.35</td>
+              <td class="metric-cell col-locked">6.94</td>
+              <td class="metric-cell col-locked">6.94</td>
             </tr>
-            <tr>
-              <td><strong>Linear Ridge ($\alpha = 50.0$)</strong></td>
-              <td class="metric-cell">7.02</td>
-              <td class="metric-cell">4.14</td>
-              <td class="metric-cell" style="color: var(--emerald);">5.86</td>
-              <td class="metric-cell" style="color: var(--emerald);">5.86</td>
-            </tr>
-            <tr>
-              <td><strong>LightGBM (GBDT)</strong></td>
-              <td class="metric-cell" style="color: var(--cyan);">6.98</td>
-              <td class="metric-cell">4.17</td>
-              <td class="metric-cell" style="color: var(--emerald);">5.90</td>
-              <td class="metric-cell" style="color: var(--emerald);">5.90</td>
-            </tr>
-            <tr class="highlight-champion">
+            <tr id="row-ridge">
               <td>
-                <strong>PatchTST</strong> 
-                <span class="badge-champ">🏆 Champion</span>
+                <strong>Linear Ridge</strong>
+                <span class="badge-tag badge-gold badge-locked">Best on Locked</span>
               </td>
-              <td class="metric-cell">7.25</td>
-              <td class="metric-cell" style="color: var(--cyan); font-size: 1.1rem;">3.87</td>
-              <td class="metric-cell">6.95</td>
-              <td class="metric-cell" style="color: var(--cyan);">6.88</td>
+              <td class="metric-cell col-val">7.02</td>
+              <td class="metric-cell col-test">4.14</td>
+              <td class="metric-cell col-locked" style="color: var(--amber); font-weight: 700;">5.86</td>
+              <td class="metric-cell col-locked" style="color: var(--amber); font-weight: 700;">5.86</td>
+            </tr>
+            <tr id="row-lgb">
+              <td>
+                <strong>LightGBM (GBDT)</strong>
+                <span class="badge-tag badge-green badge-val">Selected</span>
+              </td>
+              <td class="metric-cell col-val" style="color: var(--emerald); font-weight: 700;">6.98</td>
+              <td class="metric-cell col-test">4.17</td>
+              <td class="metric-cell col-locked">5.90</td>
+              <td class="metric-cell col-locked">5.90</td>
+            </tr>
+            <tr id="row-pt">
+              <td>
+                <strong>PatchTST</strong>
+                <span class="badge-tag badge-cyan badge-test">Best on Test</span>
+              </td>
+              <td class="metric-cell col-val">7.25</td>
+              <td class="metric-cell col-test" style="color: var(--cyan); font-weight: 700;">3.87</td>
+              <td class="metric-cell col-locked">6.95</td>
+              <td class="metric-cell col-locked">6.88</td>
             </tr>
             <tr>
               <td><strong>DenseCrossTransformer (DCT)</strong></td>
-              <td class="metric-cell">7.15</td>
-              <td class="metric-cell">5.31</td>
-              <td class="metric-cell">8.14</td>
-              <td class="metric-cell">7.10</td>
+              <td class="metric-cell col-val">7.15</td>
+              <td class="metric-cell col-test">5.31</td>
+              <td class="metric-cell col-locked">8.14</td>
+              <td class="metric-cell col-locked">7.10</td>
             </tr>
           </tbody>
         </table>
@@ -1140,19 +1229,19 @@
       <div class="speaker-note-content" hidden>
         <div class="notes-section">
           <span class="notes-label">🎯 Slide Objective</span>
-          <p>Present the master evaluation table in the exact requested order and highlight the key results.</p>
+          <p>Guide the audience through the 3-stage validation discovery: first showing Validation selection, then Test set results, and finally Locked SuperTest performance.</p>
         </div>
         <div class="notes-section">
           <span class="notes-label">🗣️ Speaker Talking Points</span>
-          <p>"Here is our final evaluation table in the requested order: Across the 65 rolling summer test windows, PatchTST is our champion, setting state-of-the-art accuracy at 3.87°F MAE and breaking the 4.0°F barrier. On the locked SuperTest, Ridge and LightGBM performed exceptionally around 5.86°F because they effectively carried forward initial warmth during an unseasonal heat wave, while retraining on spring/summer data improved deep learning models significantly."</p>
+          <p>"Let's examine our results chronologically as an engineer would. Stage 1: Looking solely at validation, LightGBM achieves the best score at 6.98°F MAE and is marked 'Selected'. Stage 2: When we reveal the Test set, PatchTST emerges as best on test, reaching 3.87°F and beating all baselines. Stage 3: Finally, on the locked SuperTest holdout, Linear Ridge proves to be the most robust at 5.86°F."</p>
         </div>
       </div>
     </section>
 
     <!-- ==========================================
-         BLOCK 9: ERROR DYNAMICS — PART 1 (SLIDE 13)
+         BLOCK 9: ERROR DYNAMICS — PART 1 (SLIDE 12)
          ========================================== -->
-    <section class="slide" data-block="09 · ERROR DYNAMICS" data-index="13">
+    <section class="slide" data-block="09 · ERROR DYNAMICS" data-index="12">
       <div class="tag-badge amber">SEASONAL DYNAMICS</div>
       <h2 class="slide-title">Why Val Error > Test Error</h2>
       <p class="slide-subtitle">Synoptic atmospheric dynamics: Spring turbulence vs. Summer subtropical persistence</p>
@@ -1185,9 +1274,9 @@
     </section>
 
     <!-- ==========================================
-         BLOCK 9: ERROR DYNAMICS — PART 2 (SLIDE 14)
+         BLOCK 9: ERROR DYNAMICS — PART 2 (SLIDE 13)
          ========================================== -->
-    <section class="slide" data-block="09 · ERROR DYNAMICS" data-index="14">
+    <section class="slide" data-block="09 · ERROR DYNAMICS" data-index="13">
       <div class="tag-badge amber">ANOMALY ANALYSIS</div>
       <h2 class="slide-title">Why Val Error ≈ SuperTest Error</h2>
       <p class="slide-subtitle">SuperTest is a single 14-day window during an extreme late-season heat wave</p>
@@ -1220,9 +1309,9 @@
     </section>
 
     <!-- ==========================================
-         BLOCK 10: TIME EMBEDDINGS (SLIDE 15)
+         BLOCK 10: TIME EMBEDDINGS (SLIDE 14)
          ========================================== -->
-    <section class="slide" data-block="10 · EMBEDDING PHYSICS" data-index="15">
+    <section class="slide" data-block="10 · EMBEDDING PHYSICS" data-index="14">
       <div class="tag-badge emerald">EMBEDDING ANALYSIS</div>
       <h2 class="slide-title">Do Embeddings Learn Real Physics?</h2>
       <p class="slide-subtitle">Month embeddings discover physical temperature without supervision</p>
@@ -1230,16 +1319,16 @@
       <div class="image-container" onclick="openLightbox('report/month_temperature_dot_product_deep_dive.png')">
         <img src="report/month_temperature_dot_product_deep_dive.png" alt="Month Temperature Dot Product Deep Dive">
       </div>
-      <div class="image-caption">🔍 Click to enlarge · Probing Alignment (r=0.984) · Matched vs Mismatched PLE Dot Products · Resonance Heatmap</div>
+      <div class="image-caption">🔍 Click to enlarge · Linear Probing: Month Vector Projection vs. Ground-Truth Climatology (r = 0.984, R² = 0.97)</div>
 
       <div class="cards-row cards-2" style="margin-top: 1rem;">
         <div class="card" style="padding: 1.25rem;">
-          <div class="card-heading" style="color: var(--cyan); font-size: 1rem;">Linear Probing ($r = 0.9838$)</div>
-          <div class="card-sub">The dot product of 16D month embeddings with the concept axis correlates at 97% ($R^2=0.968$) with real 26-year ground truth temperatures!</div>
+          <div class="card-heading" style="color: var(--cyan); font-size: 1rem;">Linear Probing ($r = 0.984$)</div>
+          <div class="card-sub">The projection of learned 16D month vectors onto the temperature concept direction correlates at 97% ($R^2=0.97$) with 26-year ground-truth temperatures!</div>
         </div>
         <div class="card" style="padding: 1.25rem;">
-          <div class="card-heading" style="color: var(--purple); font-size: 1rem;">Zero Temperature Labels Given</div>
-          <div class="card-sub">The model received only discrete integers (1–12), yet autonomously aligned July at $+1.11$ (heat peak) and January at $-1.21$ (cold trough).</div>
+          <div class="card-heading" style="color: var(--purple); font-size: 1rem;">Zero Supervision</div>
+          <div class="card-sub">The model received only integer month tokens (1–12), yet autonomously aligned July at $+1.11$ (heat peak) and January at $-1.21$ (cold trough).</div>
         </div>
       </div>
 
@@ -1250,15 +1339,15 @@
         </div>
         <div class="notes-section">
           <span class="notes-label">🗣️ Speaker Talking Points</span>
-          <p>"To check whether our deep models learned arbitrary patterns or real physics, we performed linear concept probing on the 16-dimensional month embedding space. As shown in the figure, the learned month embeddings correlate at r = 0.9838 with ground-truth temperatures! Remember: the network was never given temperature labels for calendar tokens; it only received integers 1 to 12. Yet it autonomously organized July at the hot extreme and January at the cold extreme."</p>
+          <p>"To check whether our deep models learned arbitrary patterns or real physics, we performed linear concept probing on the 16-dimensional month embedding space. As shown in the figure, the learned month embeddings correlate at r = 0.984 with ground-truth temperatures! The network was never given temperature labels for calendar tokens; it only received integers 1 to 12. Yet it autonomously organized July at the hot extreme and January at the cold extreme."</p>
         </div>
       </div>
     </section>
 
     <!-- ==========================================
-         BLOCK 10: TAKEAWAYS (SLIDE 16)
+         BLOCK 10: TAKEAWAYS (SLIDE 15)
          ========================================== -->
-    <section class="slide" data-block="10 · KEY TAKEAWAYS" data-index="16">
+    <section class="slide" data-block="10 · KEY TAKEAWAYS" data-index="15">
       <div class="tag-badge">KEY TAKEAWAYS</div>
       <h2 class="slide-title">Robustness & Validation Strategy</h2>
       <p class="slide-subtitle">Key conclusions for multi-week operational weather forecasting</p>
@@ -1300,7 +1389,7 @@
     <div class="hud-block-name" id="hudBlockName">01 · TITLE</div>
     <div class="hud-divider"></div>
     <button class="hud-btn" id="prevBtn" title="Previous Slide (← / Backspace)" aria-label="Previous Slide">‹</button>
-    <div class="hud-counter" id="hudCounter">01 / 16</div>
+    <div class="hud-counter" id="hudCounter">01 / 15</div>
     <button class="hud-btn" id="nextBtn" title="Next Slide (→ / Space)" aria-label="Next Slide">›</button>
     <div class="hud-divider"></div>
     <button class="hud-btn" id="notesToggleBtn" title="Toggle Speaker Notes (N or S)" aria-label="Toggle Speaker Notes">📝</button>
@@ -1332,8 +1421,8 @@
   <div class="help-modal" id="helpModal" onclick="closeHelp(event)">
     <div class="help-card" onclick="event.stopPropagation()">
       <h3>Keyboard Shortcuts</h3>
-      <div class="shortcut-row"><span>Next Slide</span> <kbd>→</kbd> <kbd>Space</kbd> <kbd>PageDown</kbd></div>
-      <div class="shortcut-row"><span>Previous Slide</span> <kbd>←</kbd> <kbd>Backspace</kbd> <kbd>PageUp</kbd></div>
+      <div class="shortcut-row"><span>Next Slide / Stage</span> <kbd>→</kbd> <kbd>Space</kbd> <kbd>PageDown</kbd></div>
+      <div class="shortcut-row"><span>Previous Slide / Stage</span> <kbd>←</kbd> <kbd>Backspace</kbd> <kbd>PageUp</kbd></div>
       <div class="shortcut-row"><span>Speaker Notes</span> <kbd>N</kbd> <kbd>S</kbd></div>
       <div class="shortcut-row"><span>Toggle Fullscreen</span> <kbd>F</kbd></div>
       <div class="shortcut-row"><span>First / Last Slide</span> <kbd>Home</kbd> <kbd>End</kbd></div>
@@ -1368,6 +1457,20 @@
     const helpModal = document.getElementById('helpModal');
     const helpBtn = document.getElementById('helpBtn');
 
+    // Benchmark Table Stage State & Function
+    let currentBenchmarkStage = 1;
+    function setBenchmarkStage(stage) {
+      currentBenchmarkStage = stage;
+      const table = document.getElementById('benchmarkTable');
+      if (table) {
+        table.className = `stage-${stage}`;
+      }
+      document.getElementById('btnStage1')?.classList.toggle('active', stage === 1);
+      document.getElementById('btnStage2')?.classList.toggle('active', stage === 2);
+      document.getElementById('btnStage3')?.classList.toggle('active', stage === 3);
+    }
+    window.setBenchmarkStage = setBenchmarkStage;
+
     // Timer State
     let timerSeconds = 0;
     let timerInterval = null;
@@ -1397,6 +1500,15 @@
     function updateSlide(index) {
       if (index < 0) index = 0;
       if (index >= totalSlides) index = totalSlides - 1;
+
+      // Reset or align benchmark table stage if entering slide 10 (Benchmark Results)
+      if (index === 10) {
+        if (currentSlide < 10) {
+          setBenchmarkStage(1);
+        } else if (currentSlide > 10) {
+          setBenchmarkStage(3);
+        }
+      }
 
       slides.forEach((slide, i) => {
         slide.classList.toggle('active', i === index);
@@ -1437,12 +1549,22 @@
     }
 
     function nextSlide() {
+      // If on Benchmark Results slide (slide index 10) and not yet at stage 3, reveal next stage
+      if (currentSlide === 10 && currentBenchmarkStage < 3) {
+        setBenchmarkStage(currentBenchmarkStage + 1);
+        return;
+      }
       if (currentSlide < totalSlides - 1) {
         updateSlide(currentSlide + 1);
       }
     }
 
     function prevSlide() {
+      // If on Benchmark Results slide (slide index 10) and not at stage 1, step back stage
+      if (currentSlide === 10 && currentBenchmarkStage > 1) {
+        setBenchmarkStage(currentBenchmarkStage - 1);
+        return;
+      }
       if (currentSlide > 0) {
         updateSlide(currentSlide - 1);
       }
